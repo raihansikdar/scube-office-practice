@@ -8,6 +8,7 @@ class HomeLocation extends BeamLocation<BeamState>{
   @override
   List<BeamPage> buildPages(BuildContext context, BeamState state) =>[
     const BeamPage(
+        key: ValueKey('home'),
         title: 'Home',
         child: HomeScreen())
   ];
@@ -23,6 +24,7 @@ class ProductLocation extends BeamLocation<BeamState>{
   List<BeamPage> buildPages(BuildContext context, BeamState state) {
     return [
       BeamPage(
+          key: ValueKey('product'),
           title: 'Product',
           child: ProductScreen()),
     ];
@@ -42,6 +44,7 @@ class CartLocation extends BeamLocation<BeamState>{
   List<BeamPage> buildPages(BuildContext context, BeamState state) {
     return [
       const BeamPage(
+          key: ValueKey('cart'),
           title: 'Cart',
           child: CartScreen(productName: 'new-new',)),
     ];
@@ -49,7 +52,7 @@ class CartLocation extends BeamLocation<BeamState>{
 
   @override
   // TODO: implement pathPatterns
-  List<Pattern> get pathPatterns => ["/cart"];
+  List<Pattern> get pathPatterns => ["/cart/:productName"];
 
 }
 
