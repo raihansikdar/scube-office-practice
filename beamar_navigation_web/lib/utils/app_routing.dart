@@ -31,19 +31,19 @@
 // }
 
 import 'package:beamer/beamer.dart';
-import 'package:flutter/material.dart'; // Added import for BuildContext
+import 'package:flutter/material.dart';
 import '../screens/cart_screen.dart';
 import '../screens/home_screen.dart';
 import '../screens/products_screen.dart';
-import 'locations.dart'; // Assuming you have defined your custom locations
+import 'locations.dart';
 
 class AppRouting {
   static final routerDelegate = BeamerDelegate(
     locationBuilder: (routeInformation, _) {
-      if (routeInformation.uri.toString().contains('/product')) {
+      if (routeInformation.uri.pathSegments.contains('product')) {
         return ProductLocation();
       }
-      if (routeInformation.uri.toString().contains('cart')) {
+      if (routeInformation.uri.pathSegments.contains('cart')) {
         return CartLocation();
       }
       return HomeLocation();

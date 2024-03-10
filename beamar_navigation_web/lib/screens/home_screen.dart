@@ -21,7 +21,9 @@ class HomeScreen extends StatelessWidget {
             ),
             const SizedBox(height: 10,),
             ElevatedButton(onPressed: (){
-              context.beamToNamed('/cart/ok');
+               String productName = 'ok-product';
+              // print('Navigating to /cart/$productName');
+              context.beamToNamed('/cart/$productName');
             }, child: const Text('cart'),
             ),
           ],

@@ -20,8 +20,8 @@ class ProductScreen extends StatelessWidget {
           children: [
             const Text('This is product Screen'),
             ElevatedButton(onPressed: (){
-              //Navigator.maybePop(context);
-             // Beamer.of(context).beamBack();
+              // Navigator.maybePop(context);
+              // Beamer.of(context).beamBack();
               Beamer.of(context).popToNamed('/');
 
             }, child: const Text('back home'))
