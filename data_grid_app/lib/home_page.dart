@@ -93,6 +93,16 @@ class _HomePageState extends State<HomePage> {
                 columns: _getColumns(),
             ),
           ),
+          Padding(
+            padding: const EdgeInsets.symmetric(horizontal: 16.0),
+            child: TextButton(
+                onPressed: () {
+                  _employeeDataSource.sortedColumns.add(const SortColumnDetails(
+                      name: 'name', sortDirection: DataGridSortDirection.ascending));
+                  _employeeDataSource.sort();
+                },
+                child: const Text('Apply sort')),
+          )
         ],
       ),
     );
