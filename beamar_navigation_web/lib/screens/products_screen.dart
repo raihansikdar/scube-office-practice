@@ -24,7 +24,13 @@ class ProductScreen extends StatelessWidget {
               // Beamer.of(context).beamBack();
               Beamer.of(context).popToNamed('/');
 
-            }, child: const Text('back home'))
+            }, child: const Text('back home')),
+            const SizedBox(height: 10,),
+            ElevatedButton(onPressed: (){
+
+              Beamer.of(context).beamToNamed('/cart');
+
+            }, child: const Text('go to cart'))
           ],
         ),
       ),

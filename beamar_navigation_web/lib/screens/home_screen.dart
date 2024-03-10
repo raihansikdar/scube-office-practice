@@ -22,10 +22,13 @@ class HomeScreen extends StatelessWidget {
             const SizedBox(height: 10,),
             ElevatedButton(onPressed: (){
                String productName = 'ok-product';
-              // print('Navigating to /cart/$productName');
-              context.beamToNamed('/cart/$productName');
+
+             // context.beamToNamed('/cart',data: {'productName':productName});
+               context.beamToNamed('/cart/$productName');
             }, child: const Text('cart'),
             ),
+
+
           ],
         ),
       ),
