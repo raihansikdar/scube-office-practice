@@ -170,13 +170,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   gridLinesVisibility: GridLinesVisibility.both,
                   headerGridLinesVisibility: GridLinesVisibility.both,
                   stackedHeaderRows: <StackedHeaderRow>[
-                   /* StackedHeaderRow(cells: [
+                    StackedHeaderRow(cells: [
                       StackedHeaderCell(
-                          columnNames: ['orderId', 'customerName', 'productId', 'product'],
+                          columnNames: ['pv01Voltage', 'pv01Current', 'pv02Voltage', 'pv02Current','pv03Voltage','pv03Current'],
                           child: Container(
                               color: const Color(0xFFF1F1F1),
-                              child: const Center(child: Text('Order Shipment Details')))),
-                    ]),*/
+                              child: const Center(child: Text('PV Model')))),
+                    ]),
                     StackedHeaderRow(cells: [
                       StackedHeaderCell(
                           columnNames: ['pv01Voltage', 'pv01Current'],
