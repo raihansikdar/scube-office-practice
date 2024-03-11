@@ -7,10 +7,10 @@ import 'package:load_json_data_to_grid/services/network_response.dart';
 class NetworkCaller {
   ///----------------------------------->> get request method <<----------------------------------
   static Future<NetworkResponse> getRequest(String url) async {
+     String authToken = "264ae90790a4275c27829533c55800f05301e308";
     try {
-      // Response response = await get(Uri.parse(url),headers: {'Content-Type': 'application/json','Authorization': 'Bearer ${AuthUtility.accessToken}'},);
-      Response response = await get(
-        Uri.parse(url));
+       Response response = await get(Uri.parse(url),headers: {'Authorization': 'Token $authToken'},);
+
       log("getRequest statusCode ==> ${response.statusCode}");
       log("getRequest body ==> ${response.body}");
 

@@ -1,7 +1,7 @@
 /*
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:load_json_data_to_grid/models/product_model.dart';
+import 'package:load_json_data_to_grid/models/pv_model.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class ProductDataGridSource extends DataGridSource {
@@ -78,7 +78,7 @@ class ProductDataGridSource extends DataGridSource {
 */
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
-import 'package:load_json_data_to_grid/models/product_model.dart';
+import 'package:load_json_data_to_grid/models/pv_model.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class ProductDataGridSource extends DataGridSource {
@@ -86,14 +86,14 @@ class ProductDataGridSource extends DataGridSource {
     buildDataGridRow();
   }
   late List<DataGridRow> dataGridRows;
-  late List<Product> productList;
+  late List<PVModel> productList;
 
   @override
   DataGridRowAdapter? buildRow(DataGridRow row) {
     return DataGridRowAdapter(cells: [
       Container(
         alignment: Alignment.centerLeft,
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: Text(
           row.getCells()[0].value.toString(),
           overflow: TextOverflow.ellipsis,
@@ -101,7 +101,7 @@ class ProductDataGridSource extends DataGridSource {
       ),
       Container(
         alignment: Alignment.centerLeft,
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: Text(
           row.getCells()[1].value,
           overflow: TextOverflow.ellipsis,
@@ -109,44 +109,59 @@ class ProductDataGridSource extends DataGridSource {
       ),
       Container(
         alignment: Alignment.centerRight,
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: Text(
-          row.getCells()[2].value.toString(),
+          row.getCells()[2].value.toString(), // Adjust the precision as needed
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+
+      Container(
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          row.getCells()[3].value.toString(),
           overflow: TextOverflow.ellipsis,
         ),
       ),
       Container(
         alignment: Alignment.centerRight,
-        padding: EdgeInsets.all(8.0),
+        padding: const EdgeInsets.all(8.0),
         child: Text(
-          DateFormat('MM/dd/yyyy').format(row.getCells()[3].value).toString(),
+          row.getCells()[4].value.toString(),
           overflow: TextOverflow.ellipsis,
         ),
       ),
       Container(
-          alignment: Alignment.centerRight,
-          padding: EdgeInsets.all(8.0),
-          child: Text(
-            row.getCells()[4].value.toStringAsFixed(1),
-            overflow: TextOverflow.ellipsis,
-          ))
+        alignment: Alignment.centerRight,
+        padding: const EdgeInsets.all(8.0),
+        child: Text(
+          row.getCells()[5].value.toString(),
+          overflow: TextOverflow.ellipsis,
+        ),
+      ),
+
     ]);
   }
 
   @override
   List<DataGridRow> get rows => dataGridRows;
 
+
   void buildDataGridRow() {
     dataGridRows = productList.map<DataGridRow>((dataGridRow) {
       return DataGridRow(cells: [
-        DataGridCell(columnName: 'orderID', value: dataGridRow.orderID),
-        DataGridCell<String>(
-            columnName: 'customerID', value: dataGridRow.customerID),
-        DataGridCell<int>(
-            columnName: 'employeeID', value: dataGridRow.employeeID),
-        DataGridCell<DateTime>(
-            columnName: 'orderDate', value: dataGridRow.orderDate),
-        DataGridCell<double>(columnName: 'freight', value: dataGridRow.freight)
+        DataGridCell(columnName: 'Pv01Voltage', value: dataGridRow.pv01Voltage.toString()),
+        DataGridCell(
+            columnName: 'Pv01Current', value: dataGridRow.pv01Current.toString()),
+        DataGridCell(
+            columnName: 'Pv02Voltage', value: dataGridRow.pv02Voltage.toString()),
+        DataGridCell(
+            columnName: 'Pv02Current', value: dataGridRow.pv02Current.toString()),
+        DataGridCell(
+            columnName: 'Pv03Voltage', value: dataGridRow.pv03Voltage.toString()),
+        DataGridCell(
+            columnName: 'Pv03Current', value: dataGridRow.pv03Current.toString()),
       ]);
     }).toList(growable: false);
   }
