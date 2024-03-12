@@ -226,4 +226,8 @@ class PVModel {
     data['daily_energy_yield'] = dailyEnergyYield;
     return data;
   }
+
+
+  String get name =>
+      'pv01Voltage: $pv01Voltage, pv01Current: $pv01Current, pv02Voltage: $pv02Voltage, pv02Current: $pv02Current';
 }
