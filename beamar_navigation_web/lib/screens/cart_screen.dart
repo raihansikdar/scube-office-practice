@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
 
 class CartScreen extends StatelessWidget {
-  final String productName;
+  final String? productName;
 
-   const CartScreen({super.key,  required this.productName});
+   const CartScreen({super.key,   this.productName});
 
   @override
   Widget build(BuildContext context) {
