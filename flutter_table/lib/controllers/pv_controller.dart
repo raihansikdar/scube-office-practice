@@ -27,22 +27,27 @@ class PVController extends GetxController{
     NetworkResponse response2 = await NetworkCaller.getRequest(AppUrls.inv2Url);
     NetworkResponse response3 = await NetworkCaller.getRequest(AppUrls.inv3Url);
     log('====================');
-   // log("length: ${response.body!.length}");
-   // log(response.body.toString());
+    log("length: ${response1.body!.length}");
+    log(response1.body.toString());
     log('====================');
 
     try {
-String pv = response1.body!['pv01_voltage'];
-      PVModel pvModelInv1 = PVModel.fromJson(response1.body ?? {});
-      PVModel pvModelInv2 = PVModel.fromJson(response2.body ?? {});
-      PVModel pvModelInv3 = PVModel.fromJson(response3.body ?? {});
+//String pv = response1.body!['pv01_voltage'];
+
+
+    PVModel pvModelInv1 = PVModel.fromJson(response1.body ?? {});
+    PVModel pvModelInv2 = PVModel.fromJson(response2.body ?? {});
+    PVModel pvModelInv3 = PVModel.fromJson(response3.body ?? {});
+
+    myList.add(pvModelInv1);
+    myList.add(pvModelInv2);
+    myList.add(pvModelInv3);
+
       // List<PVModel> combineList (){
         // List<PVModel> myList =[];
-        myList.add(pvModelInv1);
-        myList.add(pvModelInv2);
-        myList.add(pvModelInv3);
 
-      //  return myList;
+
+      // return myList;
       //}
       isLoading = false;
       update();

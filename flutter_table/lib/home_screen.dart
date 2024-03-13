@@ -68,26 +68,28 @@ class HomeScreen extends StatelessWidget {
               if(_pvController.isLoading){
                 return const Center(child: CircularProgressIndicator());
               }
-              return DataTable(
-                columns: const [
-                  DataColumn(label: Text('Name')),
-                  DataColumn(label: Text('Inv1')),
-                  DataColumn(label: Text('Inv2')),
-                  DataColumn(label: Text('Inv3')),
-                ],
-                rows: List<DataRow>.generate(
-                  _pvController.myList.length,
-                      (index) {
-                    final inv1ListData = _pvController.myList[index];
-                    return DataRow(
-                      cells: [
-                        DataCell(Text(inv1ListData.timedate.toString())),
-                        DataCell(Text(inv1ListData.timedate.toString())),
-                        DataCell(Text(inv1ListData.timedate.toString())),
-                        DataCell(Text(inv1ListData.timedate.toString())),
-                      ],
-                    );
-                  },
+              return FittedBox(
+                child: DataTable(
+                  columns: const [
+                    DataColumn(label: Text('Name')),
+                    DataColumn(label: Text('Inv1')),
+                    DataColumn(label: Text('Inv2')),
+                    DataColumn(label: Text('Inv3')),
+                  ],
+                  rows: List<DataRow>.generate(
+                    _pvController.myList.length,
+                        (index) {
+                      final inv1ListData = _pvController.myList[index];
+                      return DataRow(
+                        cells: [
+                          DataCell(Text('pv01Voltage')),
+                          DataCell(Text(inv1ListData.pv01Voltage.toString())),
+                          DataCell(Text(inv1ListData.pv02Voltage.toString())),
+                          DataCell(Text(inv1ListData.pv03Voltage.toString())),
+                        ],
+                      );
+                    },
+                  ),
                 ),
               );
             }
