@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_table/bindings/state_holders_binder.dart';
 import 'package:flutter_table/data_table_screen.dart';
-import 'package:flutter_table/home_screen.dart';
+import 'package:flutter_table/views/home_screen.dart';
 import 'package:flutter_table/table_page.dart';
 import 'package:get/get.dart';
 

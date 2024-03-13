@@ -22,9 +22,11 @@ class PVController extends GetxController{
   Future<void> getInv1Data() async {
     isLoading = true;
     update();
+
     NetworkResponse response1 = await NetworkCaller.getRequest(AppUrls.inv1Url);
     NetworkResponse response2 = await NetworkCaller.getRequest(AppUrls.inv2Url);
     NetworkResponse response3 = await NetworkCaller.getRequest(AppUrls.inv3Url);
+
     log('====================');
     log("length: ${response1.body!.length}");
     log(response1.body.toString());
@@ -40,8 +42,13 @@ class PVController extends GetxController{
        invList.add(pvModelInv1);
        invList.add(pvModelInv2);
        invList.add(pvModelInv3);
+
        isLoading = false;
        update();
+     }else{
+       isLoading = false;
+       update();
+
      }
 
     } catch (e) {
