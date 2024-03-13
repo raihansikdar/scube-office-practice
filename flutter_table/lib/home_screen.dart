@@ -115,7 +115,7 @@ class HomeScreen extends StatelessWidget {
               padding: const EdgeInsets.all(8.0),
               child: GetBuilder<PVController>(
                 builder: (_pvController) {
-                  print(_pvController.myList.length);
+                  print(_pvController.invList.length);
                   if (_pvController.isLoading) {
                     return const Center(child: CircularProgressIndicator());
                   }
@@ -127,11 +127,11 @@ class HomeScreen extends StatelessWidget {
                       DataColumn(label: Text('Value (Inverter 3)')),
                     ],
                     rows: [
-                      ..._pvController.myList[0].toJson().entries.map((entry) {
+                      ..._pvController.invList[0].toJson().entries.map((entry) {
                         final attribute = entry.key;
                         final inv1Value = entry.value.toString();
-                        final inv2Value = _pvController.myList[1].toJson()[entry.key].toString();
-                        final inv3Value = _pvController.myList[2].toJson()[entry.key].toString();
+                        final inv2Value = _pvController.invList[1].toJson()[entry.key].toString();
+                        final inv3Value = _pvController.invList[2].toJson()[entry.key].toString();
                         return DataRow(
                           cells: [
                             DataCell(Text(attribute)),
