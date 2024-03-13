@@ -32,7 +32,9 @@ class PVController extends GetxController{
     log('====================');
 
     try {
-//String pv = response1.body!['pv01_voltage'];
+
+      // Map<String, dynamic> jsonData =response1.body;
+      // return jsonData.map((json) => SolarModel.fromJson(json)).toList();
 
 
     PVModel pvModelInv1 = PVModel.fromJson(response1.body ?? {});
