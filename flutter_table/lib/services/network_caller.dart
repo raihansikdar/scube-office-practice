@@ -14,6 +14,7 @@ class NetworkCaller {
 
       log("getRequest statusCode ==> ${response.statusCode}");
       log("getRequest body ==> ${response.body}");
+     // log("length: ${response.body!.length}");
 
       if (response.statusCode == 200) {
         return NetworkResponse(isSuccess: true,

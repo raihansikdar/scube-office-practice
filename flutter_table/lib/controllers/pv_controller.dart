@@ -10,9 +10,8 @@ import 'package:http/http.dart';
 
 class PVController extends GetxController{
   bool isLoading = false;
-  List<PVModel> inv1List = [];
-  List<PVModel> inv2List = [];
-  List<PVModel> inv3List = [];
+  List<PVModel> invList = [];
+  
 
   @override
   void onInit(){
@@ -20,142 +19,59 @@ class PVController extends GetxController{
     super.onInit();
   }
 
-
-/*  Future<void> getInv1Data() async {
-    isLoading = true;
-    update();
-    NetworkResponse response = await NetworkCaller.getRequest(AppUrls.inv1Url);
-    log('====================');
-    log("length: ${response.body!.length}");
-    log('====================');
-    isLoading = false;
-    try {
-      if (response.isSuccess) {
-
-        if (response.body is Map<String, dynamic>) {
-          PVModel pvModel = PVModel.fromJson(response.body ?? {});
-          inv1List.add(pvModel);
-          log('====================');
-          log("map length: ${inv1List.length}");
-          log('====================');
-        } else if (response.body is List<dynamic>) {
-          List<dynamic> decodedInv1Data = response.body as List;
-          List<PVModel> newList = decodedInv1Data.map<PVModel>((json) => PVModel.fromJson(json)).toList();
-          inv1List.addAll(newList); // Append to the existing list
-          log('====================');
-          log("dynamic length: ${inv1List.length}");
-          log('====================');
-        } else {
-          log("Unknown response body type");
-        }
-        update();
-      } else {
-        log("Error: ${response.statusCode}");
-        update();
-      }
-    } catch (e) {
-      log("Exception: $e");
-    }
-  }*/
-  // Future<void> getInv1Data() async {
-  //   isLoading = true;
-  //   update();
-  //   NetworkResponse response = await NetworkCaller.getRequest(AppUrls.inv1Url);
-  //   log('====================');
-  //   log("length: ${response.body!.length}");
-  //   log('====================');
-  //   isLoading = false;
-  //
-  //
-  //   /*if (response.isSuccess) {
-  //       if (response.body is Map<String, dynamic>) {
-  //         // Handle map response
-  //         final List<dynamic> logsread = response.body!['data']['logsread'];
-  //         List<PVModel> newList = logsread.map<PVModel>((json) => PVModel.fromJson(json)).toList();
-  //         inv1List.addAll(newList);
-  //         log('====================');
-  //         log("map length: ${inv1List.length}");
-  //         log('====================');
-  //       } else if (response.body is List<dynamic>) {
-  //         // Handle list response
-  //         List<dynamic> decodedInv1Data = response.body as List;
-  //         List<PVModel> newList = decodedInv1Data.map<PVModel>((json) => PVModel.fromJson(json)).toList();
-  //         inv1List.addAll(newList);
-  //         log('====================');
-  //         log("dynamic length: ${inv1List.length}");
-  //         log('====================');
-  //       } else {
-  //         log("Unknown response body type");
-  //       }
-  //       update();
-  //     } else {
-  //       log("Error: ${response.statusCode}");
-  //       update();
-  //     }*/
-  //
-  //   if (response.isSuccess) {
-  //     if (response.body is Map<String, dynamic>?) {
-  //       // Handle map response
-  //       Map<String, dynamic>? responseBody = response.body;
-  //       if (responseBody != null) {
-  //         PVModel pvModel = PVModel.fromJson(responseBody);
-  //         inv1List.add(pvModel);
-  //         log('====================');
-  //         log("map length: ${inv1List.length}");
-  //         log('====================');
-  //       } else {
-  //         log('Error: Response body is null.');
-  //       }
-  //     } else if (response.body is List<dynamic>) {
-  //       // Handle list response
-  //       List<dynamic> decodedInv1Data = response.body as List;
-  //       List<PVModel> newList = decodedInv1Data.map<PVModel>((json) => PVModel.fromJson(json)).toList();
-  //       inv1List.addAll(newList); // Append to the existing list
-  //       log('====================');
-  //       log("dynamic length: ${inv1List.length}");
-  //       log('====================');
-  //     } else {
-  //       // Handle single object response
-  //       log("Unknown response body type");
-  //     }
-  //     update();
-  //   } else {
-  //     log("Error: ${response.statusCode}");
-  //     update();
-  //   }
-  //
-  // }
-
+  List<PVModel> myList =[];
   Future<void> getInv1Data() async {
     isLoading = true;
     update();
-    NetworkResponse response = await NetworkCaller.getRequest(AppUrls.inv1Url);
+    NetworkResponse response1 = await NetworkCaller.getRequest(AppUrls.inv1Url);
+    NetworkResponse response2 = await NetworkCaller.getRequest(AppUrls.inv2Url);
+    NetworkResponse response3 = await NetworkCaller.getRequest(AppUrls.inv3Url);
     log('====================');
-    log("length: ${response.body!.length}");
+   // log("length: ${response.body!.length}");
+   // log(response.body.toString());
     log('====================');
-    isLoading = false;
 
     try {
-      if (response.isSuccess) {
-        if (response.body is Map<String, dynamic>) {
-          // Handle map response
-          final List<dynamic> logsread = response.body! as List;
-          List<PVModel> newList = logsread.map<PVModel>((json) => PVModel.fromJson(json)).toList();
-          inv1List.addAll(newList);
-          log('====================');
-          log("map length: ${inv1List.length}");
-          log('====================');
-        } else {
-          log("Unknown response body type");
-        }
-        update();
-      } else {
-        log("Error: ${response.statusCode}");
-        update();
-      }
+String pv = response1.body!['pv01_voltage'];
+      PVModel pvModelInv1 = PVModel.fromJson(response1.body ?? {});
+      PVModel pvModelInv2 = PVModel.fromJson(response2.body ?? {});
+      PVModel pvModelInv3 = PVModel.fromJson(response3.body ?? {});
+      // List<PVModel> combineList (){
+        // List<PVModel> myList =[];
+        myList.add(pvModelInv1);
+        myList.add(pvModelInv2);
+        myList.add(pvModelInv3);
+
+      //  return myList;
+      //}
+      isLoading = false;
+      update();
+
+      // if (response1.isSuccess) {
+      //
+      //   if (response.body is Map<String, dynamic>) {
+      //     PVModel pvModelInv1 = PVModel.fromJson(response.body ?? {});
+      //     // inv1List.add(pvModel);
+      //    /// log("map length: ${inv1List.length}");
+      //
+      //   } else if (response.body is List<dynamic>) {
+      //     List<dynamic> decodedInv1Data = response.body as List;
+      //     List<PVModel> newList = decodedInv1Data.map<PVModel>((json) => PVModel.fromJson(json)).toList();
+      //     inv1List.addAll(newList); // Append to the existing list
+      //     log("dynamic length: ${inv1List.length}");
+      //
+      //   } else {
+      //     log("Unknown response body type");
+      //   }
+      //   update();
+      // } else {
+      //   log("Error: ${response.statusCode}");
+      //   update();
+      // }
     } catch (e) {
       log("Exception: $e");
     }
   }
+
 
     }

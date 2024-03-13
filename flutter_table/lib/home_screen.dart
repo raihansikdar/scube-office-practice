@@ -64,7 +64,7 @@ class HomeScreen extends StatelessWidget {
           padding: const EdgeInsets.all(8.0),
           child: GetBuilder<PVController>(
             builder: (_pvController) {
-              print(  _pvController.inv1List.length);
+             print(  _pvController.myList.length);
               if(_pvController.isLoading){
                 return const Center(child: CircularProgressIndicator());
               }
@@ -76,15 +76,15 @@ class HomeScreen extends StatelessWidget {
                   DataColumn(label: Text('Inv3')),
                 ],
                 rows: List<DataRow>.generate(
-                  _pvController.inv1List.length,
+                  _pvController.myList.length,
                       (index) {
-                    final inv1ListData = _pvController.inv1List[index];
+                    final inv1ListData = _pvController.myList[index];
                     return DataRow(
                       cells: [
-                        DataCell(Text(inv1ListData.pv01Voltage.toString())),
-                        DataCell(Text(inv1ListData.pv01Current.toString())),
-                        DataCell(Text(inv1ListData.pv02Current.toString())),
-                        DataCell(Text(inv1ListData.pv02Voltage.toString())),
+                        DataCell(Text(inv1ListData.timedate.toString())),
+                        DataCell(Text(inv1ListData.timedate.toString())),
+                        DataCell(Text(inv1ListData.timedate.toString())),
+                        DataCell(Text(inv1ListData.timedate.toString())),
                       ],
                     );
                   },
