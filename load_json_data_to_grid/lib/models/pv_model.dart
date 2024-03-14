@@ -1,4 +1,3 @@
-
 class PVModel {
   String? timedate;
   double? pv01Voltage;
