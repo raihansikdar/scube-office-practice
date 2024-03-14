@@ -88,6 +88,85 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   List<PieChartModel> chartData = [];
+  final List<Color> colorList = [Colors.blue, Colors.red, Colors.green, Colors.yellow, Colors.purple];
+
+  @override
+  void initState() {
+    super.initState();
+    fetchData();
+  }
+
+  Future<void> fetchData() async {
+    final response = await http.get(
+        Uri.parse('https://scubetech.xyz/kazi-habibpur/power-usage-in-percentage/'),
+        headers: {'Authorization': 'Token 264ae90790a4275c27829533c55800f05301e308'});
+
+    if (response.statusCode == 200) {
+      final jsonData = json.decode(response.body);
+
+
+      setState(() {
+
+        //  pieChartModel = PieChartModel.fromJson(jsonData);
+        //  chartData.add(pieChartModel);
+        chartData = [
+          PieChartModel('REB', jsonData['percentage_reb']),
+          PieChartModel('Generator 1', jsonData['percentage_generator_1']),
+          PieChartModel('Generator 2', jsonData['percentage_generator_2']),
+          PieChartModel('Solar 1', jsonData['percentage_solar1']),
+          PieChartModel('Solar 2', jsonData['percentage_solar2']),
+        ];
+      });
+    } else {
+      throw Exception('Failed to load data');
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text('Pie Chart Example'),
+      ),
+      body: Center(
+        child: Container(
+          height: 500,
+          width: 500,
+          child: SfCircularChart(
+            legend:  const Legend(isVisible: true),
+            series: <CircularSeries>[
+              PieSeries<PieChartModel, String>(
+                dataSource: chartData,
+                pointColorMapper: (PieChartModel data, _) => colorList[chartData.indexOf(data) % colorList.length],
+                xValueMapper: (PieChartModel data, _) => data.name,
+                yValueMapper: (PieChartModel data, _) => data.percentage ?? 0,
+                dataLabelMapper: (PieChartModel data, _) =>
+                '${((data.percentage ?? 0) ).toStringAsFixed(2)}%',
+                dataLabelSettings: const DataLabelSettings(
+                  isVisible: true,
+                ),
+              )
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class PieChartModel {
+  final String name;
+  final double? percentage;
+
+  PieChartModel(this.name, this.percentage);
+}
+
+
+
+
+/*
+class _MyHomePageState extends State<MyHomePage> {
+  List<PieChartModel> chartData = [];
  late PieChartModel pieChartModel;
   @override
   void initState() {
@@ -104,9 +183,15 @@ class _MyHomePageState extends State<MyHomePage> {
       final jsonData = json.decode(response.body);
       setState(() {
        // chartData = jsonData.map((x) => PieChartModel.fromJson(x).toMap()).toList();
-        pieChartModel = PieChartModel.fromJson(jsonData);
-        chartData.add(pieChartModel);
-
+       //  pieChartModel = PieChartModel.fromJson(jsonData);
+       //  chartData.add(pieChartModel);
+        chartData = [
+          PieChartModel.fromJson(jsonData, 'percentage_reb'),
+          PieChartModel.fromJson(jsonData, 'percentage_generator_1'),
+          PieChartModel.fromJson(jsonData, 'percentage_generator_2'),
+          PieChartModel.fromJson(jsonData, 'percentage_solar1'),
+          PieChartModel.fromJson(jsonData, 'percentage_solar2'),
+        ];
         log('========');
         log(jsonData.toString());
         log('========');
@@ -127,15 +212,19 @@ class _MyHomePageState extends State<MyHomePage> {
           height: 300,
           width: 300,
           child: SfCircularChart(
-            legend: const Legend(isVisible: true),
+            legend:  const Legend(isVisible: true,position: LegendPosition.bottom,),
             series: <CircularSeries>[
-
               PieSeries<PieChartModel, String>(
                 dataSource: chartData,
-                pointColorMapper: (PieChartModel data, _) => Colors.blue, // Use a color here
-                xValueMapper: (PieChartModel data, _) => 'Percentage REB',
+                pointColorMapper: (PieChartModel data, _) => Colors.blue,
+                xValueMapper: (PieChartModel data, _) => data.name,
                 yValueMapper: (PieChartModel data, _) => data.percentageReb ?? 0,
-                dataLabelSettings: const DataLabelSettings(isVisible: true),
+                dataLabelMapper: (PieChartModel data, _) =>
+                '${((data.percentageReb ?? 0) ).toStringAsFixed(2)}%',
+                dataLabelSettings: const DataLabelSettings(
+                  isVisible: true,
+
+                ),
               )
             ],
           ),
@@ -167,6 +256,7 @@ class PieChartModel {
       percentageGenerator2: json['percentage_generator_2']?.toInt(),
       percentageSolar1: json['percentage_solar1']?.toDouble(),
       percentageSolar2: json['percentage_solar2']?.toDouble(),
+
     );
   }
 
@@ -180,3 +270,4 @@ class PieChartModel {
     };
   }
 }
+*/
