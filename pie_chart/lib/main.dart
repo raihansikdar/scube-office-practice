@@ -79,8 +79,7 @@ class _MyHomePageState extends State<MyHomePage> {
                 pointColorMapper: (PieChartModel data, _) => colorList[chartData.indexOf(data) % colorList.length],
                 xValueMapper: (PieChartModel data, _) => data.name,
                 yValueMapper: (PieChartModel data, _) => data.percentage ?? 0,
-                dataLabelMapper: (PieChartModel data, _) =>
-                '${((data.percentage ?? 0) ).toStringAsFixed(2)}%',
+                dataLabelMapper: (PieChartModel data, _) => '${((data.percentage ?? 0) ).toStringAsFixed(2)}%',
                 dataLabelSettings: const DataLabelSettings(
                   isVisible: true,
                 ),

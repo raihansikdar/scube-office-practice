@@ -131,7 +131,6 @@ import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:load_json_data_to_grid/controller/inv_2_controller/inv_2_data_controller.dart';
 import 'package:load_json_data_to_grid/controller/inv_2_controller/inv_2_data_grid_source.dart';
-import 'package:load_json_data_to_grid/models/pv_model.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -151,11 +150,11 @@ class _HomeScreenState extends State<HomeScreen> {
           builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
             return snapshot.hasData
                 ? SfDataGrid(
-              source: snapshot.data,
-              columnWidthMode: ColumnWidthMode.fill,
-              gridLinesVisibility: GridLinesVisibility.both,
-              headerGridLinesVisibility: GridLinesVisibility.both,
-              /*stackedHeaderRows: <StackedHeaderRow>[
+                    source: snapshot.data,
+                    columnWidthMode: ColumnWidthMode.fill,
+                    gridLinesVisibility: GridLinesVisibility.both,
+                    headerGridLinesVisibility: GridLinesVisibility.both,
+                    /*stackedHeaderRows: <StackedHeaderRow>[
                 StackedHeaderRow(cells: [
                   StackedHeaderCell(
                     columnNames: ['PVName'],
@@ -189,13 +188,13 @@ class _HomeScreenState extends State<HomeScreen> {
                   ),
                 ])
               ],*/
-              columns: getColumns(),
-            )
+                    columns: getColumns(),
+                  )
                 : const Center(
-              child: CircularProgressIndicator(
-                strokeWidth: 3,
-              ),
-            );
+                    child: CircularProgressIndicator(
+                      strokeWidth: 3,
+                    ),
+                  );
           },
         ),
       ),
@@ -211,7 +210,6 @@ class _HomeScreenState extends State<HomeScreen> {
     return <GridColumn>[
       GridColumn(
         columnName: 'name',
-
         label: Container(
           padding: const EdgeInsets.all(8),
           alignment: Alignment.center,
@@ -225,11 +223,7 @@ class _HomeScreenState extends State<HomeScreen> {
     ];
   }
 
-
-
-
-
- /* List<GridColumn> getColumns() {
+  /* List<GridColumn> getColumns() {
     return <GridColumn>[
       GridColumn(
         columnName: 'PVName',
@@ -272,12 +266,4 @@ class _HomeScreenState extends State<HomeScreen> {
       ),
     ];
   }*/
-
-
-
-
-
-
-
-
 }
