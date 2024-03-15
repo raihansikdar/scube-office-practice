@@ -29,12 +29,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late Future<List<InverterModel>> futureData;
+  late Future<List<InverterModel>> inverterModelData;
 
   @override
   void initState() {
     super.initState();
-    futureData = fetchData();
+    inverterModelData = fetchData();
   }
 
   Future<List<InverterModel>> fetchData() async {
@@ -73,7 +73,7 @@ class _MyHomePageState extends State<MyHomePage> {
         title: const Text('Syncfusion Flutter DataGrid'),
       ),
       body: FutureBuilder<List<InverterModel>>(
-        future: futureData,
+        future: inverterModelData,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return SfDataGrid(
@@ -126,7 +126,7 @@ class _MyHomePageState extends State<MyHomePage> {
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
           }
-          return CircularProgressIndicator();
+          return const CircularProgressIndicator();
         },
       ),
     );
@@ -143,7 +143,9 @@ class InverterModel {
 }
 
 class InverterDataSource extends DataGridSource {
+
   List<DataGridRow> _inverterData = [];
+
   @override
   List<DataGridRow> get rows => _inverterData;
   InverterDataSource({required List<InverterModel> inverterModelData}) {
@@ -154,6 +156,7 @@ class InverterDataSource extends DataGridSource {
       DataGridCell(columnName: 'inverter3', value: e.inverter3.toString()),
     ])).toList();
   }
+
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
     return DataGridRowAdapter(

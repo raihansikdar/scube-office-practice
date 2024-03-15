@@ -83,12 +83,9 @@ class PVController extends GetxController {
     isLoading = true;
     update();
 
-    NetworkResponse response1 =
-    await NetworkCaller.getRequest(AppUrls.inv1Url);
-    NetworkResponse response2 =
-    await NetworkCaller.getRequest(AppUrls.inv2Url);
-    NetworkResponse response3 =
-    await NetworkCaller.getRequest(AppUrls.inv3Url);
+    NetworkResponse response1 = await NetworkCaller.getRequest(AppUrls.inv1Url);
+    NetworkResponse response2 = await NetworkCaller.getRequest(AppUrls.inv2Url);
+    NetworkResponse response3 = await NetworkCaller.getRequest(AppUrls.inv3Url);
 
     log('====================');
     log("length: ${response1.body!.length}");
@@ -97,10 +94,6 @@ class PVController extends GetxController {
 
     try {
       if (response1.isSuccess && response2.isSuccess && response3.isSuccess) {
-        if (currentPage == 0) {
-          invList.clear(); // Clear the list if it's the first page
-        }
-
         PVModel pvModelInv1 = PVModel.fromJson(response1.body ?? {});
         PVModel pvModelInv2 = PVModel.fromJson(response2.body ?? {});
         PVModel pvModelInv3 = PVModel.fromJson(response3.body ?? {});

@@ -19,6 +19,7 @@ class MyApp extends StatelessWidget {
     );
   }
 }
+
 class MyHomePage extends StatefulWidget {
   MyHomePage({Key? key}) : super(key: key);
   @override
@@ -26,8 +27,10 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
+
   List<InverterModel> inverterData = <InverterModel>[];
   late InverterDataSource inverterDataSource;
+
   List<InverterModel> getInverterData() {
     return [
       InverterModel('timedate',    1123, 1123 , 1123),
@@ -109,9 +112,12 @@ class InverterModel {
 }
 
 class InverterDataSource extends DataGridSource {
+
   List<DataGridRow> _inverterData = [];
   @override
   List<DataGridRow> get rows => _inverterData;
+
+
   InverterDataSource({required List<InverterModel> inverterModelData}) {
     _inverterData = inverterModelData.map<DataGridRow>((e) => DataGridRow(cells: [
       DataGridCell<String>(columnName: 'name', value: e.name),

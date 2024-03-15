@@ -38,26 +38,16 @@ class _MyHomePageState extends State<MyHomePage> {
   }
 
   Future<List<InverterModel>> fetchData() async {
-    final response1 = await http.get(
+    final response = await http.get(
       Uri.parse('https://scubetech.xyz/kazi-habibpur/inverter-live/Inverter01/'),
       headers: {"Authorization": "Token 264ae90790a4275c27829533c55800f05301e308"},
     );
-    final response2 = await http.get(
-      Uri.parse('https://scubetech.xyz/kazi-habibpur/inverter-live/Inverter02/'),
-      headers: {"Authorization": "Token 264ae90790a4275c27829533c55800f05301e308"},
-    );
-    final response3 = await http.get(
-      Uri.parse('https://scubetech.xyz/kazi-habibpur/inverter-live/Inverter03/'),
-      headers: {"Authorization": "Token 264ae90790a4275c27829533c55800f05301e308"},
-    );
 
-    if (response1.statusCode == 200 && response2.statusCode == 200 && response3.statusCode == 200) {
-      Map<String, dynamic> json1 = jsonDecode(response1.body);
-      Map<String, dynamic> json2 = jsonDecode(response2.body);
-      Map<String, dynamic> json3 = jsonDecode(response3.body);
+    if (response.statusCode == 200) {
+      Map<String, dynamic> json = jsonDecode(response.body);
       List<InverterModel> data = [];
-      json1.forEach((key, value) {
-        data.add(InverterModel(key, value, json2[key], json3[key]));
+      json.forEach((key, value) {
+        data.add(InverterModel(key, value));
       });
       return data;
     } else {
@@ -99,28 +89,6 @@ class _MyHomePageState extends State<MyHomePage> {
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(fontWeight: FontWeight.w600),
                         ))),
-                GridColumn(
-                    columnName: 'inverter2',
-                    label: Container(
-                        color: Colors.cyan.withOpacity(0.2),
-                        padding: const EdgeInsets.all(8.0),
-                        alignment: Alignment.center,
-                        child: const Text(
-                          'Inverter2',
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ))),
-                GridColumn(
-                    columnName: 'inverter3',
-                    label: Container(
-                        color: Colors.cyan.withOpacity(0.2),
-                        padding: const EdgeInsets.all(8.0),
-                        alignment: Alignment.center,
-                        child: const Text(
-                          'Inverter3',
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ))),
               ],
             );
           } else if (snapshot.hasError) {
@@ -136,10 +104,8 @@ class _MyHomePageState extends State<MyHomePage> {
 class InverterModel {
   final String name;
   final dynamic inverter1;
-  final dynamic inverter2;
-  final dynamic inverter3;
 
-  InverterModel(this.name, this.inverter1, this.inverter2, this.inverter3);
+  InverterModel(this.name, this.inverter1);
 }
 
 class InverterDataSource extends DataGridSource {
@@ -150,8 +116,7 @@ class InverterDataSource extends DataGridSource {
     _inverterData = inverterModelData.map<DataGridRow>((e) => DataGridRow(cells: [
       DataGridCell<String>(columnName: 'name', value: e.name),
       DataGridCell(columnName: 'inverter1', value: e.inverter1.toString()),
-      DataGridCell(columnName: 'inverter2', value: e.inverter2.toString()),
-      DataGridCell(columnName: 'inverter3', value: e.inverter3.toString()),
+
     ])).toList();
   }
   @override
