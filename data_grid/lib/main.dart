@@ -160,8 +160,8 @@ class InverterModel {
     if (key == 'tamedate' && data is String) {
       try {
         final parsedDate = DateTime.parse(data);
-        final formattedDate = DateFormat('dd/MMM/yyyy').format(parsedDate);
-        final formattedTime = DateFormat('hh:mm a').format(parsedDate);
+        final formattedDate = DateFormat('dd/MM/yyyy').format(parsedDate);
+        final formattedTime = DateFormat('hh:mm').format(parsedDate);
         return '$formattedDate $formattedTime';
       } catch (e) {
         return 'Invalid Date';
