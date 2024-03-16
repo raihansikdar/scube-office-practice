@@ -141,35 +141,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   ]),
 
                 ]
-
-              /* stackedHeaderRows: <StackedHeaderRow>[
-                  StackedHeaderRow(cells: [
-                    StackedHeaderCell(
-                      columnNames: ['name'],
-                      child: Container(
-                        color: const Color(0xFFF1F1F1),
-                        child: const Center(child: Text('Name')),
-                      ),
-                    ),
-                    StackedHeaderCell(
-                      columnNames: ['inverter1', 'inverter2'],
-                      child: Container(
-                        color: const Color(0xFFF1F1F1),
-                        child: const Center(child: Text('Electricity monitoring')),
-                      ),
-                    ),
-                    StackedHeaderCell(
-                      columnNames: ['inverter3'],
-                      child: Container(
-                        color: const Color(0xFFF1F1F1),
-                        child: const Center(child: Text('Inverter3')),
-                      ),
-                    ),
-                  ]),
-                ]
-*/
-
-
             );
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");

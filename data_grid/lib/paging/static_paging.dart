@@ -2,17 +2,25 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 
-final int _rowsPerPage = 15;
+const int _rowsPerPage = 15;
 
-final double _dataPagerHeight = 60.0;
+const double _dataPagerHeight = 60.0;
 
-List<OrderInfo> _orders = []; // Ensure you populate this list with your data
+List<OrderInfo> _orders = [];
 
 List<OrderInfo> _paginatedOrders = [];
 
 final OrderInfoDataSource _orderInfoDataSource = OrderInfoDataSource();
 
 void main() {
+  _orders = List.generate(100, (index) {
+    return OrderInfo(
+      orderID: index + 1,
+      customerID: 'Customer ${index + 1}',
+      orderDate: DateTime.now().subtract(Duration(days: index)),
+      freight: (index + 1) * 10.0,
+    );
+  });
   runApp(MyApp());
 }
 
@@ -57,36 +65,36 @@ class MyHomePage extends StatelessWidget {
           GridColumn(
               columnName: 'orderID',
               label: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   alignment: Alignment.centerRight,
-                  child: Text(
+                  child: const Text(
                     'Order ID',
                     overflow: TextOverflow.ellipsis,
                   ))),
           GridColumn(
               columnName: 'customerID',
               label: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   alignment: Alignment.centerLeft,
-                  child: Text(
+                  child: const Text(
                     'Customer Name',
                     overflow: TextOverflow.ellipsis,
                   ))),
           GridColumn(
               columnName: 'orderDate',
               label: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   alignment: Alignment.centerRight,
-                  child: Text(
+                  child: const Text(
                     'Order Date',
                     overflow: TextOverflow.ellipsis,
                   ))),
           GridColumn(
               columnName: 'freight',
               label: Container(
-                  padding: EdgeInsets.symmetric(horizontal: 16.0),
+                  padding: const EdgeInsets.symmetric(horizontal: 16.0),
                   alignment: Alignment.center,
-                  child: Text(
+                  child: const Text(
                     'Freight',
                     overflow: TextOverflow.ellipsis,
                   )))
@@ -110,7 +118,9 @@ class OrderInfo {
 
 class OrderInfoDataSource extends DataGridSource {
   OrderInfoDataSource() {
-    _paginatedOrders = _orders.getRange(0, 19).toList(growable: false);
+    // _paginatedOrders = _orders.getRange(0, 19).toList(growable: false);
+    _paginatedOrders = _orders.getRange(0, _rowsPerPage.clamp(0, _orders.length)).toList(growable: false);
+
     buildPaginatedDataGridRows();
   }
 
@@ -125,7 +135,7 @@ class OrderInfoDataSource extends DataGridSource {
         cells: row.getCells().map<Widget>((dataGridCell) {
           if (dataGridCell.columnName == 'orderID') {
             return Container(
-              padding: EdgeInsets.symmetric(horizontal: 16.0),
+              padding: const EdgeInsets.symmetric(horizontal: 16.0),
               alignment: Alignment.centerRight,
               child: Text(
                 dataGridCell.value.toString(),
@@ -134,7 +144,7 @@ class OrderInfoDataSource extends DataGridSource {
             );
           } else if (dataGridCell.columnName == 'customerID') {
             return Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 alignment: Alignment.centerLeft,
                 child: Text(
                   dataGridCell.value.toString(),
@@ -142,7 +152,7 @@ class OrderInfoDataSource extends DataGridSource {
                 ));
           } else if (dataGridCell.columnName == 'orderDate') {
             return Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 alignment: Alignment.centerRight,
                 child: Text(
                   DateFormat.yMd().format(dataGridCell.value).toString(),
@@ -150,7 +160,7 @@ class OrderInfoDataSource extends DataGridSource {
                 ));
           } else {
             return Container(
-                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                 alignment: Alignment.center,
                 child: Text(
                   NumberFormat.currency(locale: 'en_US', symbol: '\$')
