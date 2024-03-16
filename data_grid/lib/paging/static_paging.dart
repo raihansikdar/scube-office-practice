@@ -36,6 +36,8 @@ class MyApp extends StatelessWidget {
 }
 
 class MyHomePage extends StatelessWidget {
+  const MyHomePage({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -45,7 +47,7 @@ class MyHomePage extends StatelessWidget {
               height: constraint.maxHeight - _dataPagerHeight,
               width: constraint.maxWidth,
               child: _buildDataGrid(constraint)),
-          Container(
+          SizedBox(
               height: _dataPagerHeight,
               child: SfDataPager(
                 delegate: _orderInfoDataSource,
