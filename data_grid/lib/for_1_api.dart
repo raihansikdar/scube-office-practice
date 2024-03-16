@@ -44,8 +44,10 @@ class _MyHomePageState extends State<MyHomePage> {
     );
 
     if (response.statusCode == 200) {
+
       Map<String, dynamic> json = jsonDecode(response.body);
       List<InverterModel> data = [];
+
       json.forEach((key, value) {
         data.add(InverterModel(key, value));
       });
@@ -94,7 +96,7 @@ class _MyHomePageState extends State<MyHomePage> {
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
           }
-          return CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         },
       ),
     );

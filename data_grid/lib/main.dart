@@ -77,8 +77,16 @@ class _MyHomePageState extends State<MyHomePage> {
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return SfDataGrid(
+               gridLinesVisibility: GridLinesVisibility.both,
+               headerGridLinesVisibility: GridLinesVisibility.both,
               source: InverterDataSource(inverterModelData: snapshot.data!),
-              allowSorting: true,
+                onQueryRowHeight: (RowHeightDetails details) {
+                  if (details.rowIndex == 0) {
+                    return 50.0;
+                  }
+                  return details.rowHeight;
+                },
+              //allowSorting: true,
               columnWidthMode: ColumnWidthMode.fill,
               columns: <GridColumn>[
                 GridColumn(
@@ -122,11 +130,37 @@ class _MyHomePageState extends State<MyHomePage> {
                           style: TextStyle(fontWeight: FontWeight.w600),
                         ))),
               ],
+
+                stackedHeaderRows: <StackedHeaderRow>[
+                  StackedHeaderRow(cells: [
+                    StackedHeaderCell(
+                        columnNames: ['inverter1', 'inverter2','inverter3'],
+                        child: Container(
+                            color: const Color(0xFFF1F1F1),
+                            child: const Center(child: Text('Electricity monitoring')))),
+                  ]),
+                  // StackedHeaderRow(cells: [
+                  //   StackedHeaderCell(
+                  //       columnNames: ['orderId', 'customerName'],
+                  //       child: Container(
+                  //           color: const Color(0xFFF1F1F1),
+                  //           child: const Center(child: Text('Customer Details')))),
+                  //   StackedHeaderCell(
+                  //       columnNames: ['productId', 'product'],
+                  //       child: Container(
+                  //           color: const Color(0xFFF1F1F1),
+                  //           child: const Center(child: Text('Product Details'))))
+                  // ])
+                ]
+
+
+
+
             );
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
           }
-          return CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         },
       ),
     );
