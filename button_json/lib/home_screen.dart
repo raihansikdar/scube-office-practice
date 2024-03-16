@@ -53,8 +53,6 @@ List<YearlyTotalEnergy> yearlyEnergyList = <YearlyTotalEnergy>[];
       }
   }
 
-
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -74,19 +72,18 @@ List<YearlyTotalEnergy> yearlyEnergyList = <YearlyTotalEnergy>[];
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            if (rebEnergyList.isEmpty || yearlyEnergyList.isEmpty)
-              const Text('Data not available'),
-            if (rebEnergyList.isNotEmpty && yearlyEnergyList.isNotEmpty)
-              Text(isOn ? "Reb Energy: ${rebEnergyList.first.totalRebEnergy}" : "Power Sum: ${rebEnergyList.first.totalPowerSum}"),
-              Text(isOn ? "generator_1_energy: ${yearlyEnergyList.first.generator1Energy}" : "reb_energy: ${yearlyEnergyList.first.rebEnergy}"),
+            Text(isOn ? "Reb Energy: ${rebEnergyList.isNotEmpty ? rebEnergyList[0].totalRebEnergy : 'N/A'}" : "Power Sum: ${rebEnergyList.isNotEmpty ? rebEnergyList[0].totalPowerSum : 'N/A'}"),
+            Text(isOn ? "generator_1_energy: ${yearlyEnergyList.isNotEmpty? yearlyEnergyList[0].generator1Energy : 'N/A'}" : "reb_energy: ${yearlyEnergyList.isNotEmpty ? yearlyEnergyList[0].rebEnergy : 'N/A'}"),
+
+
 
             const SizedBox(height: 8.0,),
               const Text('Reb 2'),
             const SizedBox(height: 16.0,),
             ElevatedButton(onPressed: () {
                 Navigator.push(context, MaterialPageRoute(
-                    builder: (context)=> isOn ?  OperationScreen(isOn: true, totalRebEnergy: rebEnergyList.first.totalRebEnergy,generator1Energy: yearlyEnergyList.first.generator1Energy,)
-                        : OperationScreen(isOn: false,totalPowerSum:rebEnergyList.first.totalPowerSum,rebEnergy: yearlyEnergyList.first.rebEnergy,)));
+                    builder: (context)=> isOn ?  OperationScreen(isOn: true, totalRebEnergy: rebEnergyList[0].totalRebEnergy,generator1Energy: yearlyEnergyList[0].generator1Energy,)
+                        : OperationScreen(isOn: false,totalPowerSum:rebEnergyList[0].totalPowerSum,rebEnergy: yearlyEnergyList[0].rebEnergy,)));
             }, child: const Text('Next Operation')),
           ],
         ),
