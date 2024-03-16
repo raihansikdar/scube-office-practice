@@ -29,12 +29,12 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  late Future<List<InverterModel>> inverterModelData;
+  late Future<List<InverterModel>> futureData;
 
   @override
   void initState() {
     super.initState();
-    inverterModelData = fetchData();
+    futureData = fetchData();
   }
 
   Future<List<InverterModel>> fetchData() async {
@@ -73,60 +73,108 @@ class _MyHomePageState extends State<MyHomePage> {
         title: const Text('Syncfusion Flutter DataGrid'),
       ),
       body: FutureBuilder<List<InverterModel>>(
-        future: inverterModelData,
+        future: futureData,
         builder: (context, snapshot) {
           if (snapshot.hasData) {
             return SfDataGrid(
-              source: InverterDataSource(inverterModelData: snapshot.data!),
-              allowSorting: true,
-              columnWidthMode: ColumnWidthMode.fill,
-              columns: <GridColumn>[
-                GridColumn(
-                    columnName: 'name',
-                    label: Container(
-                        color: Colors.cyan.withOpacity(0.2),
-                        padding: const EdgeInsets.all(8.0),
-                        alignment: Alignment.center,
-                        child: const Text('Name', style: TextStyle(fontWeight: FontWeight.w600),))),
-                GridColumn(
-                    columnName: 'inverter1',
-                    label: Container(
-                        color: Colors.cyan.withOpacity(0.2),
-                        padding: const EdgeInsets.all(8.0),
-                        alignment: Alignment.center,
-                        child: const Text(
-                          'Inverter1',
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ))),
-                GridColumn(
-                    columnName: 'inverter2',
-                    label: Container(
-                        color: Colors.cyan.withOpacity(0.2),
-                        padding: const EdgeInsets.all(8.0),
-                        alignment: Alignment.center,
-                        child: const Text(
-                          'Inverter2',
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ))),
-                GridColumn(
-                    columnName: 'inverter3',
-                    label: Container(
-                        color: Colors.cyan.withOpacity(0.2),
-                        padding: const EdgeInsets.all(8.0),
-                        alignment: Alignment.center,
-                        child: const Text(
-                          'Inverter3',
-                          overflow: TextOverflow.ellipsis,
-                          style: TextStyle(fontWeight: FontWeight.w600),
-                        ))),
-              ],
+                gridLinesVisibility: GridLinesVisibility.both,
+                headerGridLinesVisibility: GridLinesVisibility.both,
+                source: InverterDataSource(inverterModelData: snapshot.data!),
+                onQueryRowHeight: (RowHeightDetails details) {
+                  if (details.rowIndex == 0) {
+                    return 20.0;
+                  }
+                  return details.rowHeight;
+                },
+                //allowSorting: true,
+                columnWidthMode: ColumnWidthMode.fill,
+                columns: <GridColumn>[
+                  GridColumn(
+                      columnName: 'name',
+                      label: Container(
+                          color: Colors.cyan.withOpacity(0.2),
+                          padding: const EdgeInsets.all(8.0),
+                          alignment: Alignment.center,
+                          child: const Text('Name', style: TextStyle(fontWeight: FontWeight.w600),))),
+                  GridColumn(
+                      columnName: 'inverter1',
+                      label: Container(
+                          color: Colors.cyan.withOpacity(0.2),
+                          padding: const EdgeInsets.all(8.0),
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Inverter1',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.w600),
+                          ))),
+                  GridColumn(
+                      columnName: 'inverter2',
+                      label: Container(
+                          color: Colors.cyan.withOpacity(0.2),
+                          padding: const EdgeInsets.all(8.0),
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Inverter2',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.w600),
+                          ))),
+                  GridColumn(
+                      columnName: 'inverter3',
+                      label: Container(
+                          color: Colors.cyan.withOpacity(0.2),
+                          padding: const EdgeInsets.all(8.0),
+                          alignment: Alignment.center,
+                          child: const Text(
+                            'Inverter3',
+                            overflow: TextOverflow.ellipsis,
+                            style: TextStyle(fontWeight: FontWeight.w600),
+                          ))),
+                ],
+
+                stackedHeaderRows: <StackedHeaderRow>[
+                  StackedHeaderRow(cells: [
+                    StackedHeaderCell(
+                        columnNames: ['inverter1', 'inverter2',],
+                        child: Container(
+                            color: const Color(0xFFF1F1F1),
+                            child: const Center(child: Text('Electricity monitoring')))),
+                  ]),
+
+                ]
+
+              /* stackedHeaderRows: <StackedHeaderRow>[
+                  StackedHeaderRow(cells: [
+                    StackedHeaderCell(
+                      columnNames: ['name'],
+                      child: Container(
+                        color: const Color(0xFFF1F1F1),
+                        child: const Center(child: Text('Name')),
+                      ),
+                    ),
+                    StackedHeaderCell(
+                      columnNames: ['inverter1', 'inverter2'],
+                      child: Container(
+                        color: const Color(0xFFF1F1F1),
+                        child: const Center(child: Text('Electricity monitoring')),
+                      ),
+                    ),
+                    StackedHeaderCell(
+                      columnNames: ['inverter3'],
+                      child: Container(
+                        color: const Color(0xFFF1F1F1),
+                        child: const Center(child: Text('Inverter3')),
+                      ),
+                    ),
+                  ]),
+                ]
+*/
+
+
             );
           } else if (snapshot.hasError) {
             return Text("${snapshot.error}");
           }
-          return const CircularProgressIndicator();
+          return const Center(child: CircularProgressIndicator());
         },
       ),
     );
@@ -143,9 +191,7 @@ class InverterModel {
 }
 
 class InverterDataSource extends DataGridSource {
-
   List<DataGridRow> _inverterData = [];
-
   @override
   List<DataGridRow> get rows => _inverterData;
   InverterDataSource({required List<InverterModel> inverterModelData}) {
@@ -156,7 +202,6 @@ class InverterDataSource extends DataGridSource {
       DataGridCell(columnName: 'inverter3', value: e.inverter3.toString()),
     ])).toList();
   }
-
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
     return DataGridRowAdapter(
