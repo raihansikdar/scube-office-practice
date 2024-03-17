@@ -1,25 +1,7 @@
-// import 'package:beamar_navigation_web/utils/app_routing.dart';
-// import 'package:beamer/beamer.dart';
-// import 'package:flutter/material.dart';
-//
-// void main() {
-//   runApp( MyApp());
-// }
-//
-// class MyApp extends StatelessWidget {
-//   const MyApp({super.key});
-//
-//   @override
-//   Widget build(BuildContext context) {
-//     return MaterialApp.router(
-//       routeInformationParser: BeamerParser(),
-//       routerDelegate: AppRouting.routerDelegate,
-//     );
-//   }
-// }
 
 
 
+/*
 import 'package:flutter/material.dart';
 import 'package:collection/collection.dart';
 import 'package:beamer/beamer.dart';
@@ -162,4 +144,99 @@ class MyApp extends StatelessWidget {
   }
 }
 
-void main() => runApp(MyApp());
+void main() => runApp(MyApp());*/
+import 'package:beamer/beamer.dart';
+import 'package:flutter/material.dart';
+
+void main() {
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  final routerDelegate = BeamerDelegate(
+    locationBuilder: BeamerLocationBuilder(
+      beamLocations: [
+        HomeLocation(),
+        CartLocation(),
+      ],
+    ),
+  );
+
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp.router(
+      routerDelegate: routerDelegate,
+      routeInformationParser: BeamerParser(),
+    );
+  }
+}
+
+class HomeLocation extends BeamLocation {
+  @override
+  List<String> get pathBlueprints => ['/'];
+
+  @override
+  List<BeamPage> buildPages(BuildContext context, BeamState state) {
+    return [
+      BeamPage(
+        key: ValueKey('home'),
+        child: HomeScreen(),
+      ),
+    ];
+  }
+}
+
+class HomeScreen extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.amber,
+        title: const Text('Home'),
+      ),
+      body: Center(
+        child: ElevatedButton(
+          onPressed: () {
+            context.beamToNamed('/cart/ok-product');
+          },
+          child: const Text('Go to cart'),
+        ),
+      ),
+    );
+  }
+}
+
+class CartLocation extends BeamLocation {
+  @override
+  List<String> get pathBlueprints => ['/cart/:productName'];
+
+  @override
+  List<BeamPage> buildPages(BuildContext context, BeamState state) {
+    final productName = state.pathParameters['productName']!;
+    return [
+      BeamPage(
+        key: ValueKey('cart-$productName'),
+        child: CartScreen(productName: productName),
+      ),
+    ];
+  }
+}
+
+class CartScreen extends StatelessWidget {
+  final String productName;
+
+  CartScreen({required this.productName});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        backgroundColor: Colors.amber,
+        title: const Text('Cart'),
+      ),
+      body: Center(
+        child: Text('Product Name: $productName'),
+      ),
+    );
+  }
+}

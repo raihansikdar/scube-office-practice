@@ -35,7 +35,6 @@ class ProductLocation extends BeamLocation<BeamState> {
 class CartLocation extends BeamLocation<BeamState> {
   @override
   List<String> get pathBlueprints => ['/cart/:productName'];
-
   @override
   List<Pattern> get pathPatterns {
     return ['/cart/:productName'];
@@ -44,8 +43,6 @@ class CartLocation extends BeamLocation<BeamState> {
   List<BeamPage> buildPages(BuildContext context, BeamState state) {
     final productName = state.pathParameters[pathBlueprints];
     print("===>productName: $productName");
-
-    if (productName != null) {
       return [
         BeamPage(
           key: const ValueKey('cart'),
@@ -53,19 +50,7 @@ class CartLocation extends BeamLocation<BeamState> {
           child: CartScreen(productName: productName),
         ),
       ];
-    }
-
-    // Handle the case where productName is null by showing a default message.
-    return [
-      BeamPage(
-        key: const ValueKey('cart'),
-        title: 'Cart',
-        child: CartScreen(productName: 'Product Name is Null'),
-      ),
-    ];
   }
-
-
 }
 
 

@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 
 class CartScreen extends StatelessWidget {
   final String? productName;
-
    const CartScreen({super.key,   this.productName});
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(

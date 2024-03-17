@@ -20,34 +20,12 @@ class HomeScreen extends StatelessWidget {
             }, child: const Text('product'),
             ),
             const SizedBox(height: 10,),
-
-            // ElevatedButton(
-            //   onPressed: () {
-            //     final state = BeamState(
-            //       pathPatternSegments: ['/cart', ':productName'],
-            //       pathParameters: {'productName': 'ok-product'},
-            //     );
-            //     context.beamToNamed('/cart', data: state);
-            //   },
-            //   child: const Text('cart'),
-            // ),
-
-
             ElevatedButton(
               onPressed: () {
-                final state = BeamState(
-                  pathParameters: {'productName': 'ok-product'},
-                );
-                print("HomeScreen BeamState: $state");
-                context.beamToNamed('/cart', data: state.pathParameters);
+                context.beamToNamed('/cart', data: {'productName': 'ok-product'});
               },
               child: const Text('cart'),
             ),
-
-
-
-
-
           ],
         ),
       ),
