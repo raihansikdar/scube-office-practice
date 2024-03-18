@@ -100,18 +100,17 @@ class _MyHomePageState extends State<MyHomePage> {
             headerGridLinesVisibility: GridLinesVisibility.both,
             source: inverterDataSource,
             columnWidthMode: ColumnWidthMode.fill,
+            rowHeight: 30.0,
             columns: <GridColumn>[
               GridColumn(
                   columnName: 'name',
                   label: Container(
-                    height: 20,
                       padding: const EdgeInsets.all(8.0),
                       alignment: Alignment.center,
                       child: const Text('Name', style: TextStyle(fontWeight: FontWeight.w600,color: Colors.black),))),
               GridColumn(
                   columnName: 'energy',
                   label: Container(
-                      height: 20,
                       padding: const EdgeInsets.all(8.0),
                       alignment: Alignment.center,
                       child: const Text(
@@ -122,14 +121,12 @@ class _MyHomePageState extends State<MyHomePage> {
               GridColumn(
                 columnName: 'pr',
                 label: Container(
-                  height: 20,
                   padding: const EdgeInsets.all(8.0),
                   alignment: Alignment.center,
                   child: const Text('PR', style: TextStyle(fontWeight: FontWeight.w600,color: Colors.black),),),),
               GridColumn(
                 columnName: 'acMaxPower',
                 label: Container(
-                  height: 20,
                   padding: const EdgeInsets.all(8.0),
                   alignment: Alignment.center,
                   child: const Text('Max (AC)', style: TextStyle(fontWeight: FontWeight.w600,color: Colors.black),),),),
@@ -137,14 +134,12 @@ class _MyHomePageState extends State<MyHomePage> {
               GridColumn(
                 columnName: 'dcMaxPower',
                 label: Container(
-                  height: 20,
                   padding: const EdgeInsets.all(8.0),
                   alignment: Alignment.center,
                   child: const Text('Max (DC)', style: TextStyle(fontWeight: FontWeight.w600,color: Colors.black),),),),
               GridColumn(
                 columnName: 'specificYield',
                 label: Container(
-                  height: 20,
                   padding: const EdgeInsets.all(8.0),
                   alignment: Alignment.center,
                   child: const Text('Specific Yield', style: TextStyle(fontWeight: FontWeight.w600,color: Colors.black),),),),
