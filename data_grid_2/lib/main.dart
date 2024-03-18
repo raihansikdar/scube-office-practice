@@ -32,10 +32,6 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
 
-  // List<InverterModel> rebData = <InverterModel>[];
-  // List<InverterModel> generator1Data = <InverterModel>[];
-  // List<InverterModel> generator2Data = <InverterModel>[];
-  //late InverterDataSource inverterDataSource;
   late InverterDataSource inverterDataSource = InverterDataSource(inverterModelData: []);
   bool _isLoading = false;
 
@@ -238,42 +234,7 @@ class InverterModel {
   InverterModel({required this.name, required this.livePower, required this.liveFrequency, required this.liveVoltageL1, required this.liveVoltageL2, required this.liveVoltageL3, required this.liveCurrentL1, required this.liveCurrentL2, required this.liveCurrentL3, required this.averageCurrentHarmonics, required this.averageVoltageHarmonics, required this.todaysEnergy});
 
 }
-/*
-class InverterDataSource extends DataGridSource {
 
-  List<DataGridRow> _inverterData = [];
-  @override
-  List<DataGridRow> get rows => _inverterData;
-
-
-  InverterDataSource({required List<InverterModel> inverterModelData}) {
-    _inverterData = inverterModelData.map<DataGridRow>((e) => DataGridRow(cells: [
-      DataGridCell<String>(columnName: 'name', value: e.name),
-      DataGridCell(columnName: 'livePower', value: e.livePower.toString()),
-      DataGridCell(columnName: 'liveFrequency', value: e.liveFrequency.toString()),
-      DataGridCell(columnName: 'liveVoltageL1', value: e.liveVoltageL1.toString()),
-      DataGridCell(columnName: 'liveVoltageL2', value: e.liveVoltageL2.toString()),
-      DataGridCell(columnName: 'liveVoltageL3', value: e.liveVoltageL3.toString()),
-      DataGridCell(columnName: 'liveCurrentL1', value: e.liveCurrentL1.toString()),
-      DataGridCell(columnName: 'liveCurrentL2', value: e.liveCurrentL2.toString()),
-      DataGridCell(columnName: 'liveCurrentL3', value: e.liveCurrentL3.toString()),
-      DataGridCell(columnName: 'averageCurrentHarmonics', value: e.averageCurrentHarmonics.toString()),
-      DataGridCell(columnName: 'averageVoltageHarmonics', value: e.averageVoltageHarmonics.toString()),
-      DataGridCell(columnName: 'todaysEnergy', value: e.todaysEnergy.toString()),
-    ])).toList();
-  }
-  @override
-  DataGridRowAdapter buildRow(DataGridRow row) {
-    return DataGridRowAdapter(
-        cells: row.getCells().map<Widget>((e) {
-          return Container(
-            alignment: Alignment.center,
-            padding: const EdgeInsets.all(8.0),
-            child: Text(e.value.toString()),
-          );
-        }).toList());
-  }
-}*/
 class InverterDataSource extends DataGridSource {
   List<DataGridRow> _inverterData = [];
 
