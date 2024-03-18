@@ -3,6 +3,7 @@ import 'package:intl/intl.dart';
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
 import 'dart:convert';
 import 'package:http/http.dart' as http;
+import 'package:syncfusion_flutter_core/theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -30,7 +31,6 @@ class Combine3Api extends StatefulWidget {
 }
 
 class _Combine3ApiState extends State<Combine3Api> {
-  //late Future<List<InverterModel>> futureData;
   List<InverterModel> inverterData = [];
   late InverterDataSource _inverterDataSource;
   bool _isLoading = true;
@@ -38,11 +38,10 @@ class _Combine3ApiState extends State<Combine3Api> {
   @override
   void initState() {
     super.initState();
-    //futureData = fetchData();
     fetchData();
   }
 
-  Future< /*List<InverterModel>*/ void> fetchData() async {
+  Future<void> fetchData() async {
     final response1 = await http.get(
       Uri.parse(
           'https://scubetech.xyz/kazi-habibpur/inverter-live/Inverter01/'),
@@ -65,20 +64,15 @@ class _Combine3ApiState extends State<Combine3Api> {
       },
     );
 
-    if (response1.statusCode == 200 &&
-        response2.statusCode == 200 &&
-        response3.statusCode == 200) {
+    if (response1.statusCode == 200 && response2.statusCode == 200 && response3.statusCode == 200) {
+
       Map<String, dynamic> json1 = jsonDecode(response1.body);
       Map<String, dynamic> json2 = jsonDecode(response2.body);
       Map<String, dynamic> json3 = jsonDecode(response3.body);
 
       setState(() {
         json1.forEach((key, value) {
-          String formattedKey = key
-              .replaceAll('_', ' ')
-              .split(' ')
-              .map((String word) => word[0].toUpperCase() + word.substring(1))
-              .join(' ');
+          String formattedKey = key.replaceAll('_', ' ').split(' ').map((String word) => word[0].toUpperCase() + word.substring(1)).join(' ');
           if (key == 'timedate') {
             formattedKey = 'Time & Date';
           }
@@ -105,80 +99,65 @@ class _Combine3ApiState extends State<Combine3Api> {
     return Scaffold(
         appBar: AppBar(
           centerTitle: true,
-          title: const Text('Syncfusion Flutter DataGrid'),
+          title: const Text('Syncfusion Flutter DataGrid with setstate'),
         ),
         body: _isLoading
             ? const Center(child: CircularProgressIndicator())
-            : SfDataGrid(
-                gridLinesVisibility: GridLinesVisibility.both,
-                headerGridLinesVisibility: GridLinesVisibility.both,
-                source: _inverterDataSource,
-                onQueryRowHeight: (RowHeightDetails details) {
-                  if (details.rowIndex == 0) {
-                    return 20.0;
-                  }
-                  return details.rowHeight;
-                },
-                //allowSorting: true,
-                columnWidthMode: ColumnWidthMode.fill,
-                columns: <GridColumn>[
-                    GridColumn(
-                        columnName: 'name',
-                        label: Container(
-                            color: Colors.cyan.withOpacity(0.2),
-                            padding: const EdgeInsets.all(8.0),
-                            alignment: Alignment.center,
-                            child: const Text(
-                              'Name',
-                              style: TextStyle(fontWeight: FontWeight.w600),
-                            ))),
-                    GridColumn(
-                        columnName: 'inverter1',
-                        label: Container(
-                            color: Colors.cyan.withOpacity(0.2),
-                            padding: const EdgeInsets.all(8.0),
-                            alignment: Alignment.center,
-                            child: const Text(
-                              'Inverter1',
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontWeight: FontWeight.w600),
-                            ))),
-                    GridColumn(
-                        columnName: 'inverter2',
-                        label: Container(
-                            color: Colors.cyan.withOpacity(0.2),
-                            padding: const EdgeInsets.all(8.0),
-                            alignment: Alignment.center,
-                            child: const Text(
-                              'Inverter2',
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontWeight: FontWeight.w600),
-                            ))),
-                    GridColumn(
-                        columnName: 'inverter3',
-                        label: Container(
-                            color: Colors.cyan.withOpacity(0.2),
-                            padding: const EdgeInsets.all(8.0),
-                            alignment: Alignment.center,
-                            child: const Text(
-                              'Inverter3',
-                              overflow: TextOverflow.ellipsis,
-                              style: TextStyle(fontWeight: FontWeight.w600),
-                            ))),
-                  ],
-                stackedHeaderRows: <StackedHeaderRow>[
-                    StackedHeaderRow(cells: [
-                      StackedHeaderCell(
-                          columnNames: [
-                            'inverter1',
-                            'inverter2',
-                          ],
-                          child: Container(
-                              color: const Color(0xFFF1F1F1),
-                              child: const Center(
-                                  child: Text('Electricity monitoring')))),
-                    ]),
-                  ]));
+            : SfDataGridTheme(
+          data: SfDataGridThemeData(
+            headerColor: const Color(0xff9ea8bf).withOpacity(0.95),
+            sortIconColor: const Color(0xfff7f8fa),
+          ),
+          child: SfDataGrid(
+            gridLinesVisibility: GridLinesVisibility.both,
+            headerGridLinesVisibility: GridLinesVisibility.both,
+            source: _inverterDataSource,
+
+            allowSorting: true,
+            columnWidthMode: ColumnWidthMode.fill,
+            columns: <GridColumn>[
+              GridColumn(
+                  columnName: 'name',
+                  label: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'Name',
+                        style: TextStyle(fontWeight: FontWeight.w600,color: Colors.white),
+                      ))),
+              GridColumn(
+                  columnName: 'inverter1',
+                  label: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'Inverter1',
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontWeight: FontWeight.w600,color: Colors.white),
+                      ))),
+              GridColumn(
+                  columnName: 'inverter2',
+                  label: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'Inverter2',
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontWeight: FontWeight.w600,color: Colors.white),
+                      ))),
+              GridColumn(
+                  columnName: 'inverter3',
+                  label: Container(
+                      padding: const EdgeInsets.all(8.0),
+                      alignment: Alignment.center,
+                      child: const Text(
+                        'Inverter3',
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(fontWeight: FontWeight.w600,color: Colors.white),
+                      ))),
+            ],
+          ),
+        ));
   }
 }
 
@@ -190,9 +169,9 @@ class InverterModel {
 
   InverterModel(
       {required this.name,
-      required this.inverter1,
-      required this.inverter2,
-      required this.inverter3});
+        required this.inverter1,
+        required this.inverter2,
+        required this.inverter3});
 
   String getFormattedData(dynamic data, String key) {
     if (key == 'tamedate' && data is String) {
@@ -218,28 +197,28 @@ class InverterDataSource extends DataGridSource {
   InverterDataSource({required List<InverterModel> inverterModelData}) {
     _inverterData = inverterModelData
         .map<DataGridRow>((e) => DataGridRow(cells: [
-              DataGridCell<String>(columnName: 'name', value: e.name),
-              DataGridCell(
-                  columnName: 'inverter1',
-                  value: e.getFormattedData(e.inverter1, 'tamedate')),
-              DataGridCell(
-                  columnName: 'inverter2',
-                  value: e.getFormattedData(e.inverter2, 'tamedate')),
-              DataGridCell(
-                  columnName: 'inverter3',
-                  value: e.getFormattedData(e.inverter3, 'tamedate')),
-            ]))
+      DataGridCell<String>(columnName: 'name', value: e.name),
+      DataGridCell(
+          columnName: 'inverter1',
+          value: e.getFormattedData(e.inverter1, 'tamedate')),
+      DataGridCell(
+          columnName: 'inverter2',
+          value: e.getFormattedData(e.inverter2, 'tamedate')),
+      DataGridCell(
+          columnName: 'inverter3',
+          value: e.getFormattedData(e.inverter3, 'tamedate')),
+    ]))
         .toList();
   }
   @override
   DataGridRowAdapter buildRow(DataGridRow row) {
     return DataGridRowAdapter(
         cells: row.getCells().map<Widget>((e) {
-      return Container(
-        alignment: Alignment.center,
-        padding: const EdgeInsets.all(8.0),
-        child: Text(e.value.toString()),
-      );
-    }).toList());
+          return Container(
+            alignment: Alignment.center,
+            padding: const EdgeInsets.all(8.0),
+            child: Text(e.value.toString()),
+          );
+        }).toList());
   }
 }
