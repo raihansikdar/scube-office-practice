@@ -37,7 +37,7 @@ class _MyHomePageState extends State<MyHomePage> {
 
 
   Future<List<InverterModel>> fetchData(String endPoint) async {
-    const String _baseUrl = 'http://192.168.68.170:8000';
+    const String _baseUrl = 'http://192.168.68.185:8000';
     const String authToken = '';
 
     final response = await http.get(Uri.parse(_baseUrl + endPoint), headers: {'Authorization': authToken});
@@ -100,7 +100,8 @@ class _MyHomePageState extends State<MyHomePage> {
             headerGridLinesVisibility: GridLinesVisibility.both,
             source: inverterDataSource,
             columnWidthMode: ColumnWidthMode.fill,
-            rowHeight: 30.0,
+            rowHeight: 38.0,
+            headerRowHeight: 40.0,
             columns: <GridColumn>[
               GridColumn(
                   columnName: 'name',
@@ -143,8 +144,6 @@ class _MyHomePageState extends State<MyHomePage> {
                   padding: const EdgeInsets.all(8.0),
                   alignment: Alignment.center,
                   child: const Text('Specific Yield', style: TextStyle(fontWeight: FontWeight.w600,color: Colors.black),),),),
-
-
             ],
 
         ),
@@ -162,8 +161,6 @@ class InverterModel {
   final dynamic specificYield;
 
   InverterModel({required this.name, this.timeDate, required this.energy, required this.pr, required this.acMaxPower, required this.dcMaxPower, required this.specificYield});
-
-
 
 }
 
@@ -214,6 +211,5 @@ class InverterDataSource extends DataGridSource {
         return value.toString();
     }
   }
-
 
 }
