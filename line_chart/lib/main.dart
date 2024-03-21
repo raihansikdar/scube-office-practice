@@ -9,7 +9,7 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      title: 'Flutter Line chart',
+      title: 'Flutter Column chart',
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
@@ -22,49 +22,50 @@ class MyApp extends StatelessWidget {
 class HomePage extends StatelessWidget {
   HomePage({super.key});
 
+  final List<GDPData> chartData = [
+    GDPData('Oceania', 1600),
+    GDPData('Africa', 2490),
+    GDPData('S America', 2900),
+    GDPData('Europe', 23050),
+    GDPData('N America', 24880),
+    GDPData('Asia', 34390),
+  ];
 
   @override
   Widget build(BuildContext context) {
-    final List<ChartData> chartData = [
-      ChartData(2010, 35, 23),
-      ChartData(2011, 38, 49),
-      ChartData(2012, 34, 12),
-      ChartData(2013, 52, 33),
-      ChartData(2014, 40, 30)
-    ];
-
     return Scaffold(
-        body: Center(
-            child: Container(
-                child: SfCartesianChart(
-                  // Columns will be rendered back to back
-                    enableSideBySideSeriesPlacement: false,
-                    series: <CartesianSeries<ChartData, int>>[
-                      ColumnSeries<ChartData, int>(
-                          width: 0.5,
-                          spacing: 0.8,
-                          dataSource: chartData,
-                          xValueMapper: (ChartData data, _) => data.x,
-                          yValueMapper: (ChartData data, _) => data.y
-                      ),
-                      ColumnSeries<ChartData, int>(
-                          opacity: 0.9,
-                          width: 0.3,
-                          spacing: 0.8,
-                          dataSource: chartData,
-                          xValueMapper: (ChartData data, _) => data.x,
-                          yValueMapper: (ChartData data, _) => data.y1
-                      )
-                    ]
-                )
-            )
-        )
+      appBar: AppBar(
+        backgroundColor: Colors.deepPurple,
+        centerTitle: true,
+        title: const Text('Column Chart',style: TextStyle(color:Colors.white),),),
+      body: SfCartesianChart(
+        title: const ChartTitle(text: 'Continent wise GDP - 2021'),
+        legend: const Legend(isVisible: true,position: LegendPosition.bottom),
+        tooltipBehavior: TooltipBehavior(enable: true),
+        series: <CartesianSeries>[
+          ColumnSeries<GDPData, String>(
+            name: 'GDP',
+            dataSource: chartData,
+            xValueMapper: (GDPData gdp, _) => gdp.continent,
+            yValueMapper: (GDPData gdp, _) => gdp.gdp,
+            dataLabelSettings: const DataLabelSettings(isVisible: true),
+            width: 0.6,
+            spacing: 0.3,
+          ),
+        ],
+        primaryXAxis: const CategoryAxis(),
+        primaryYAxis: NumericAxis(
+            labelFormat: '{value}M',
+            edgeLabelPlacement: EdgeLabelPlacement.shift,
+            numberFormat: NumberFormat.simpleCurrency(decimalDigits: 0),
+            title: const AxisTitle(text: 'GDP in billions of U.S. Dollars')),
+      ),
     );
   }
 }
-  class ChartData {
-  ChartData(this.x, this.y, this.y1);
-  final int x;
-  final double y;
-  final double y1;
-  }
+
+class GDPData {
+  final String continent;
+  final double gdp;
+  GDPData(this.continent, this.gdp);
+}
