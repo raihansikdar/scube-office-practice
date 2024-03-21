@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 void main() {
@@ -6,7 +5,7 @@ void main() {
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
+  const MyApp({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -112,7 +111,7 @@ class _HomeScreenState extends State<HomeScreen> {
                                     source = !source;
                                   });
                                 },
-                                child:  Icon(load ? Icons.arrow_drop_down : Icons.arrow_right)),
+                                child:  Icon(source ? Icons.arrow_drop_down : Icons.arrow_right)),
                             Checkbox(
                               value: source,
                               onChanged: (val) {
