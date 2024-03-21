@@ -44,15 +44,7 @@ class _MyHomePageState extends State<MyHomePage> {
       final jsonData = json.decode(response.body);
 
       setState(() {
-        //  pieChartModel = PieChartModel.fromJson(jsonData);
-        //  chartData.add(pieChartModel);
-        chartData = [
-          PieChartModel('REB', jsonData['percentage_reb']),
-          PieChartModel('Generator 1', jsonData['percentage_generator_1']),
-          PieChartModel('Generator 2', jsonData['percentage_generator_2']),
-          PieChartModel('Solar 1', jsonData['percentage_solar1']),
-          PieChartModel('Solar 2', jsonData['percentage_solar2']),
-        ];
+        chartData = PieChartModel.fromJson(jsonData);
       });
     } else {
       throw Exception('Failed to load data');
@@ -71,7 +63,6 @@ class _MyHomePageState extends State<MyHomePage> {
           width: 500,
           child: SfCircularChart(
             legend:  const Legend(isVisible: true),
-            tooltipBehavior: TooltipBehavior(enable: true),
             series: <CircularSeries>[
               PieSeries<PieChartModel, String>(
                 dataSource: chartData,
@@ -96,5 +87,14 @@ class PieChartModel {
   final double? percentage;
 
   PieChartModel(this.name, this.percentage);
-}
 
+  static List<PieChartModel> fromJson(Map<String, dynamic> json) {
+    return [
+      PieChartModel('REB', json['percentage_reb']),
+      PieChartModel('Generator 1', json['percentage_generator_1']),
+      PieChartModel('Generator 2', json['percentage_generator_2']),
+      PieChartModel('Solar 1', json['percentage_solar1']),
+      PieChartModel('Solar 2', json['percentage_solar2']),
+    ];
+  }
+}
