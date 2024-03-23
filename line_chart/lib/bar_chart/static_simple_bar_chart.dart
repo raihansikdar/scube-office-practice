@@ -130,14 +130,14 @@ class HomePage extends StatelessWidget {
                 width: 0.6,
                 spacing: 0.3,
               ),
-
             ],
             primaryXAxis: const CategoryAxis(),
             primaryYAxis: NumericAxis(
                 labelFormat: '{value}M',
                 edgeLabelPlacement: EdgeLabelPlacement.shift,
                 numberFormat: NumberFormat.simpleCurrency(decimalDigits: 0),
-                title: const AxisTitle(text: 'GDP in billions of U.S. Dollars')),
+                title: const AxisTitle(text: 'GDP in billions of U.S. Dollars'),
+            ),
           ),
         ));
   }

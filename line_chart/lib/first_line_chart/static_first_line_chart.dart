@@ -48,7 +48,6 @@ class HomePage extends StatelessWidget {
                 xValueMapper: (ChartDataModel data, _)=> data.x,
                 yValueMapper:  (ChartDataModel data, _)=>data.y,
               ),
-
             ],
             //primaryXAxis: const NumericAxis(edgeLabelPlacement: EdgeLabelPlacement.shift,),
             //primaryYAxis: NumericAxis(numberFormat: NumberFormat.simpleCurrency(decimalDigits: 0),),
