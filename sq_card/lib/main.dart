@@ -1,7 +1,10 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
+import 'package:font_awesome_flutter/font_awesome_flutter.dart';
 import 'package:http/http.dart' as http;
 void main() {
   runApp(const MyApp());
@@ -98,17 +101,15 @@ Future<void>fetchData()async{
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: SingleChildScrollView(
-        scrollDirection: Axis.horizontal,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(horizontal: 16.0),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              //----------- Generation-------
-              SizedBox(
+      body: Padding(
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
+        child: Row(
+          ///mainAxisAlignment: MainAxisAlignment.spaceBetween,
+          children: [
+            //----------- Generation-------
+            Expanded(
+              child: SizedBox(
                 height: 200,
-                width: 300,
                 child: Card(
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
@@ -116,7 +117,6 @@ Future<void>fetchData()async{
                   ),
                   elevation: 2.0,
                   child: Column(
-
                     children: [
                       Container(
                         height: 40,
@@ -142,49 +142,47 @@ Future<void>fetchData()async{
                       ),
                       Padding(
                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                       child: Center(
-                         child: Column(
-                           //crossAxisAlignment: CrossAxisAlignment.center,
-                           mainAxisAlignment: MainAxisAlignment.center,
-                           children: [
-                             Center(
-                               child: Text.rich(
-                                 textAlign: TextAlign.center,
+                       child: Column(
+                         //crossAxisAlignment: CrossAxisAlignment.center,
+                         mainAxisAlignment: MainAxisAlignment.center,
+                         children: [
+                           const SizedBox(height: 50,),
+                           Text.rich(
+                             textAlign: TextAlign.center,
+                             TextSpan(
+                               children: [
+                                 const TextSpan(text: "Today's Net : ", style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold,color: Colors.grey),),
                                  TextSpan(
-                                   children: [
-                                     const TextSpan(text: "Today's Net : ", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
-                                     TextSpan(
-                                       text: todayGenerationValue.toStringAsFixed(2),
-                                       style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.deepPurple),
-                                     ),
-                                   ],
+                                   text: todayGenerationValue.toStringAsFixed(2),
+                                   style: const TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold,color: Colors.deepPurple),
                                  ),
-                               ),
+                               ],
                              ),
-                             const SizedBox(height: 8.0,),
-                              Text.rich(
-                               TextSpan(
-                                 children: [
-                                   const TextSpan(text: "Yesterday's Net : ", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
-                                   TextSpan(
-                                     text: yesterdayGenerationValue.toStringAsFixed(2),
-                                     style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.deepPurple),
-                                   ),
-                                 ],
-                               ),
+                           ),
+                           const SizedBox(height: 12.0,),
+                            Text.rich(
+                             TextSpan(
+                               children: [
+                                 const TextSpan(text: "Yesterday's Net : ", style: TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold,color: Colors.grey),),
+                                 TextSpan(
+                                   text: yesterdayGenerationValue.toStringAsFixed(2),
+                                   style: const TextStyle(fontSize: 16.0,fontWeight: FontWeight.bold,color: Colors.deepPurple),
+                                 ),
+                               ],
                              ),
-                           ],
-                         ),
+                           ),
+                         ],
                        ),
                      )
                     ],
                   ),
                 ),
               ),
-              //----------- Temperature-------
-              SizedBox(
+            ),
+            //----------- Temperature-------
+            Expanded(
+              child: SizedBox(
                 height: 200,
-                width: 300,
                 child: Card(
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
@@ -217,46 +215,48 @@ Future<void>fetchData()async{
                       ),
                        Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 8.0),
-                        child: Center(
-                          child: Column(
-                            //crossAxisAlignment: CrossAxisAlignment.center,
-                            //mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Text.rich(
-                                TextSpan(
-                                  children: [
-                                    const TextSpan(text: "Module Temperature : ", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
-                                    TextSpan(
-                                      text: "${moduleTempValue.toStringAsFixed(0) }°C",
-                                      style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.deepPurple),
-                                    ),
-                                  ],
-                                ),
+                        child: Column(
+                          //crossAxisAlignment: CrossAxisAlignment.center,
+                          //mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            const SizedBox(height: 20,),
+                            const FaIcon(FontAwesomeIcons.temperatureFull),
+                            const SizedBox(height: 8.0,),
+                            Text.rich(
+                              TextSpan(
+                                children: [
+                                  const TextSpan(text: "Module Temperature : ", style: TextStyle(fontSize:16.0,fontWeight: FontWeight.bold,color: Colors.grey),),
+                                  TextSpan(
+                                    text: "${moduleTempValue.toStringAsFixed(0) }°C",
+                                    style: const TextStyle(fontSize:16.0,fontWeight: FontWeight.bold,color: Colors.deepPurple),
+                                  ),
+                                ],
                               ),
-                              const SizedBox(height: 8.0,),
-                              Text.rich(
-                                TextSpan(
-                                  children: [
-                                    const TextSpan(text: "30 min Average : ", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
-                                    TextSpan(
-                                      text: "${ambientTempValue.toStringAsFixed(0) }°C",
-                                      style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.deepPurple),
-                                    ),
-                                  ],
-                                ),
+                            ),
+                            const SizedBox(height: 12.0,),
+                            Text.rich(
+                              TextSpan(
+                                children: [
+                                  const TextSpan(text: "30 min Average : ", style: TextStyle(fontSize:16.0,fontWeight: FontWeight.bold,color: Colors.grey),),
+                                  TextSpan(
+                                    text: "${ambientTempValue.toStringAsFixed(0) }°C",
+                                    style: const TextStyle(fontSize:16.0,fontWeight: FontWeight.bold,color: Colors.deepPurple),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
+                            ),
+                          ],
                         ),
                       )
                     ],
                   ),
                 ),
               ),
-              //----------- Radiation-------
-              SizedBox(
+            ),
+            //----------- Radiation-------
+            Expanded(
+              child: SizedBox(
                 height: 200,
-                width: 300,
                 child: Card(
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
@@ -288,69 +288,84 @@ Future<void>fetchData()async{
                         ),
                       ),
                        Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 8.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 16.0),
                         child: Center(
                           child: Column(
                             //crossAxisAlignment: CrossAxisAlignment.center,
                             //mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Text.rich(
-                                TextSpan(
-                                  children: [
-                                    const TextSpan(text: "East : ", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
+                              const SizedBox(height: 15.0,),
+                              const FaIcon(FontAwesomeIcons.radiation),
+                              const SizedBox(height: 12.0,),
+                              Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  Expanded(child: Text.rich(
                                     TextSpan(
-                                      text: "${radiationEastValue.toStringAsFixed(0)} W/m²",
-                                      style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.deepPurple),
+                                      children: [
+                                        const TextSpan(text: "East : ", style: TextStyle(fontSize:16.0,fontWeight: FontWeight.bold,color: Colors.grey),),
+                                        TextSpan(
+                                          text: "${radiationEastValue.toStringAsFixed(2)} W/m²",
+                                          style: const TextStyle(fontSize:16.0,fontWeight: FontWeight.bold,color: Colors.deepPurple),
+                                        ),
+                                      ],
                                     ),
-                                  ],
-                                ),
+                                  ),),
+                                  const SizedBox(width: 16.0,),
+                                  Expanded(child: Text.rich(
+                                    TextSpan(
+                                      children: [
+                                        const TextSpan(text: "West : ", style: TextStyle(fontSize:16.0,fontWeight: FontWeight.bold,color: Colors.grey),),
+                                        TextSpan(
+                                          text: "${radiationWestValue.toStringAsFixed(2)} W/m²",
+                                          style: const TextStyle(fontSize:16.0,fontWeight: FontWeight.bold,color: Colors.deepPurple),
+                                        ),
+                                      ],
+                                    ),
+                                  ),)
+                                ],
                               ),
-                              const SizedBox(height: 8.0,),
-                              Text.rich(
-                                TextSpan(
-                                  children: [
-                                    const TextSpan(text: "West : ", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
-                                    TextSpan(
-                                      text: "${radiationWestValue.toStringAsFixed(0)} W/m²",
-                                      style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.deepPurple),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 8.0,),
-                              Text.rich(
-                                TextSpan(
-                                  children: [
-                                    const TextSpan(text: "North : ", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
-                                    TextSpan(
-                                      text: "${radiationNorthValue.toStringAsFixed(0)} W/m²",
-                                      style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.deepPurple),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 8.0,),
-                              Text.rich(
-                                TextSpan(
-                                  children: [
-                                    const TextSpan(text: "South : ", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
-                                    TextSpan(
-                                      text: "${radiationSouthValue.toStringAsFixed(0)} W/m²",
-                                      style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.deepPurple),
-                                    ),
-                                  ],
-                                ),
-                              ),
-                              const SizedBox(height: 8.0,),
-                              Text.rich(
-                                TextSpan(
-                                  children: [
-                                    const TextSpan(text: "South 15°C : ", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
-                                    TextSpan(
-                                      text: "${radiationSouth15Value.toStringAsFixed(0)} W/m²",
-                                      style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.deepPurple),
-                                    ),
-                                  ],
+                              const SizedBox(height: 12.0,),
+                             Row(
+                               mainAxisAlignment: MainAxisAlignment.center,
+                               children: [
+                                 Expanded(child: Text.rich(
+                                   TextSpan(
+                                     children: [
+                                       const TextSpan(text: "North : ", style: TextStyle(fontSize:16.0,fontWeight: FontWeight.bold,color: Colors.grey),),
+                                       TextSpan(
+                                         text: "${radiationNorthValue.toStringAsFixed(2)} W/m²",
+                                         style: const TextStyle(fontSize:16.0,fontWeight: FontWeight.bold,color: Colors.deepPurple),
+                                       ),
+                                     ],
+                                   ),
+                                 ),),
+                                 const SizedBox(width: 16.0,),
+                                Expanded(child:  Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      const TextSpan(text: "South : ", style: TextStyle(fontSize:16.0,fontWeight: FontWeight.bold,color: Colors.grey),),
+                                      TextSpan(
+                                        text: "${radiationSouthValue.toStringAsFixed(2)} W/m²",
+                                        style: const TextStyle(fontSize:16.0,fontWeight: FontWeight.bold,color: Colors.deepPurple),
+                                      ),
+                                    ],
+                                  ),
+                                ),)
+                               ],
+                             ),
+                              const SizedBox(height: 12.0,),
+                              FittedBox(
+                                child: Text.rich(
+                                  TextSpan(
+                                    children: [
+                                      const TextSpan(text: "South 15°C : ", style: TextStyle(fontSize:16.0,fontWeight: FontWeight.bold,color: Colors.grey),),
+                                      TextSpan(
+                                        text: "${radiationSouth15Value.toStringAsFixed(2)} W/m²",
+                                        style: const TextStyle(fontSize:16.0,fontWeight: FontWeight.bold,color: Colors.deepPurple),
+                                      ),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ],
@@ -361,10 +376,11 @@ Future<void>fetchData()async{
                   ),
                 ),
               ),
-              //----------- Gross Profit-------
-              SizedBox(
+            ),
+            //----------- Gross Profit-------
+            Expanded(
+              child: SizedBox(
                 height: 200,
-                width: 300,
                 child: Card(
                   color: Colors.white,
                   shape: RoundedRectangleBorder(
@@ -372,7 +388,6 @@ Future<void>fetchData()async{
                   ),
                   elevation: 2.0,
                   child: Column(
-
                     children: [
                       Container(
                         height: 40,
@@ -403,18 +418,19 @@ Future<void>fetchData()async{
                             //crossAxisAlignment: CrossAxisAlignment.center,
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
-                              Center(
-                                child: Text.rich(
-                                  textAlign: TextAlign.center,
-                                  TextSpan(
-                                    children: [
-                                      const TextSpan(text: "Gross Profit : ", style: TextStyle(fontWeight: FontWeight.bold,color: Colors.grey),),
-                                      TextSpan(
-                                        text: "${grossProfitValue.toStringAsFixed(2)} ৳",
-                                        style: const TextStyle(fontWeight: FontWeight.bold,color: Colors.deepPurple),
-                                      ),
-                                    ],
-                                  ),
+                              const SizedBox(height: 30,),
+                              const FaIcon(FontAwesomeIcons.bangladeshiTakaSign),
+                              const SizedBox(height: 8.0,),
+                              Text.rich(
+                                textAlign: TextAlign.center,
+                                TextSpan(
+                                  children: [
+                                    const TextSpan(text: "Gross Profit : ", style: TextStyle(fontSize:16.0,fontWeight: FontWeight.bold,color: Colors.grey),),
+                                    TextSpan(
+                                      text: "${grossProfitValue.toStringAsFixed(2)} ৳",
+                                      style: const TextStyle(fontSize:16.0,fontWeight: FontWeight.bold,color: Colors.deepPurple),
+                                    ),
+                                  ],
                                 ),
                               ),
 
@@ -426,8 +442,8 @@ Future<void>fetchData()async{
                   ),
                 ),
               ),
-            ],
-          ),
+            ),
+          ],
         ),
       ),
     );
