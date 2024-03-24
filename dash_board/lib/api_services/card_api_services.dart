@@ -4,7 +4,7 @@ import 'package:dash_board/models/card_power_model.dart';
 
 class CardApiServices{
 
-  static Future<CardPowerModel>cardFetchData()async{
+  static Future<CardPowerModel>fetchCardData()async{
     const String _baseUrl = 'http://192.168.60.60:8000/';
     const String authToken = '';
 
