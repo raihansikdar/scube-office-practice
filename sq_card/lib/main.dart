@@ -451,7 +451,7 @@ Future<void>fetchData()async{
 }
 
 
-class PowerModel{
+class CardPowerModel{
   final double todayGeneration;
   final double yesterdayGeneration;
   final double moduleTemp;
@@ -463,10 +463,10 @@ class PowerModel{
   final double radiationSouth15;
   final double energyCost;
 
-  PowerModel({required this.todayGeneration, required this.yesterdayGeneration, required this.moduleTemp, required this.ambientTemp, required this.radiationEast, required this.radiationWest, required this.radiationNorth, required this.radiationSouth, required this.radiationSouth15, required this.energyCost});
+  CardPowerModel({required this.todayGeneration, required this.yesterdayGeneration, required this.moduleTemp, required this.ambientTemp, required this.radiationEast, required this.radiationWest, required this.radiationNorth, required this.radiationSouth, required this.radiationSouth15, required this.energyCost});
 
-  factory PowerModel.fromJson(Map<String,dynamic>json){
-    return PowerModel(
+  factory CardPowerModel.fromJson(Map<String,dynamic>json){
+    return CardPowerModel(
       todayGeneration: json['plant'],
       yesterdayGeneration: json['plant'],
       moduleTemp: json['module_temp'],
