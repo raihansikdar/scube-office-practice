@@ -33,12 +33,10 @@ class HomeScreen extends StatefulWidget {
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-
   double acPlantValue = 0.0;
   double prPlantValue = 0.0;
   double poaAvgValue = 0.0;
   double poaDayAvgValue = 0.0;
-
 
   Future<void> fetchData() async {
     const String _baseUrl = 'http://192.168.68.185:8000';
@@ -48,13 +46,15 @@ class _HomeScreenState extends State<HomeScreen> {
     String othersEndPoint = '/single-cumulative-pr/';
 
     try {
-      final acPowerResponse = await http.get(Uri.parse(_baseUrl + acPowerEndPoint), headers: {'Authorization': authToken});
+      final acPowerResponse = await http.get(
+          Uri.parse(_baseUrl + acPowerEndPoint),
+          headers: {'Authorization': authToken});
 
-      final otherResponse = await http.get(Uri.parse(_baseUrl + othersEndPoint), headers: {'Authorization': authToken});
+      final otherResponse = await http.get(Uri.parse(_baseUrl + othersEndPoint),
+          headers: {'Authorization': authToken});
 
-
-
-      if (acPowerResponse.statusCode == 200 && otherResponse.statusCode == 200 ) {
+      if (acPowerResponse.statusCode == 200 &&
+          otherResponse.statusCode == 200) {
         final acPowerJsonData = jsonDecode(acPowerResponse.body);
         final othersJsonData = jsonDecode(otherResponse.body);
 
@@ -68,7 +68,6 @@ class _HomeScreenState extends State<HomeScreen> {
           log(prPlantValue.toString());
           log(poaAvgValue.toString());
           log(poaDayAvgValue.toString());
-
         });
       } else {
         throw Exception('Failed to load data');
@@ -77,12 +76,12 @@ class _HomeScreenState extends State<HomeScreen> {
       log('Error fetching data: $e');
     }
   }
-@override
+
+  @override
   void initState() {
-   fetchData();
+    fetchData();
     super.initState();
   }
-
 
   @override
   Widget build(BuildContext context) {
@@ -109,7 +108,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 300,
                       child: _buildRadialGauge(
                         title: 'Active AC Power',
-                        value: acPlantValue, startValue: 0, endValue: 1600, interval: 400, minimum: 0, maximum: 1600, text: '${acPlantValue.toStringAsFixed(2)} kW',  labelFormat: '{value} kW',
+                        value: acPlantValue,
+                        startValue: 0,
+                        endValue: 1600,
+                        interval: 400,
+                        minimum: 0,
+                        maximum: 1600,
+                        text: '${acPlantValue.toStringAsFixed(2)} kW',
+                        labelFormat: '{value} kW',
                       ),
                     ),
                   ),
@@ -118,7 +124,14 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 300,
                       child: _buildRadialGauge(
                         title: 'Live PR',
-                        value: prPlantValue, startValue: 0, endValue: 2, interval: 1, minimum: 0, maximum: 2, text: prPlantValue.toStringAsFixed(2), labelFormat: '{value}',
+                        value: prPlantValue,
+                        startValue: 0,
+                        endValue: 2,
+                        interval: 1,
+                        minimum: 0,
+                        maximum: 2,
+                        text: prPlantValue.toStringAsFixed(2),
+                        labelFormat: '{value}',
                       ),
                     ),
                   ),
@@ -127,7 +140,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 300,
                       child: _buildRadialGauge(
                         title: 'Irr Average',
-                        value: poaAvgValue, startValue: 0, endValue: 1200, interval: 300, minimum: 0, maximum: 1200, text: '${poaAvgValue.toStringAsFixed(2)} w/m${String.fromCharCode(0x00B2)}', labelFormat: '{value} w/m²',
+                        value: poaAvgValue,
+                        startValue: 0,
+                        endValue: 1200,
+                        interval: 300,
+                        minimum: 0,
+                        maximum: 1200,
+                        text:
+                            '${poaAvgValue.toStringAsFixed(2)} w/m${String.fromCharCode(0x00B2)}',
+                        labelFormat: '{value} w/m²',
                       ),
                     ),
                   ),
@@ -136,7 +157,15 @@ class _HomeScreenState extends State<HomeScreen> {
                       height: 300,
                       child: _buildRadialGauge(
                         title: 'Daily Cumulative Average',
-                        value: poaDayAvgValue, startValue: 0, endValue: 10, interval: 3, minimum: 0, maximum: 10, text: '${poaDayAvgValue.toStringAsFixed(2)} wh/m${String.fromCharCode(0x00B2)}', labelFormat: '{value} wh/m²',
+                        value: poaDayAvgValue,
+                        startValue: 0,
+                        endValue: 10,
+                        interval: 3,
+                        minimum: 0,
+                        maximum: 10,
+                        text:
+                            '${poaDayAvgValue.toStringAsFixed(2)} wh/m${String.fromCharCode(0x00B2)}',
+                        labelFormat: '{value} wh/m²',
                       ),
                     ),
                   ),
@@ -150,7 +179,16 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildRadialGauge({required String title, required double value,required double startValue,required double endValue,required double interval,required double minimum,required double maximum,required String text, required String labelFormat}) {
+  Widget _buildRadialGauge(
+      {required String title,
+      required double value,
+      required double startValue,
+      required double endValue,
+      required double interval,
+      required double minimum,
+      required double maximum,
+      required String text,
+      required String labelFormat}) {
     return Card(
       shape: RoundedRectangleBorder(
         borderRadius: BorderRadius.circular(15.0),
@@ -200,13 +238,13 @@ class _HomeScreenState extends State<HomeScreen> {
                           endAngle: 0,
                           interval: interval,
                           radiusFactor: 1.1,
-                         minimum:minimum,
-                         maximum: maximum,
+                          minimum: minimum,
+                          maximum: maximum,
                           showLabels: true,
                           labelFormat: labelFormat,
-                          ranges:  <GaugeRange>[
+                          ranges: <GaugeRange>[
                             GaugeRange(
-                              startValue:startValue,
+                              startValue: startValue,
                               endValue: endValue,
                               color: Colors.grey,
                               startWidth: 10,
@@ -272,20 +310,18 @@ class _HomeScreenState extends State<HomeScreen> {
   }
 }
 
-
-class PowerModel{
+class GaugePowerModel {
   final double? plant;
   final double? poaAvg;
   final double? poaDayAvg;
 
-  PowerModel({this.plant, this.poaAvg, this.poaDayAvg});
+  GaugePowerModel({this.plant, this.poaAvg, this.poaDayAvg});
 
-  factory PowerModel.fromJson(Map<String,dynamic> json){
-    return PowerModel(
-        plant: json['plant'],
-        poaAvg: json['poa_avg'],
-        poaDayAvg: json['poa_day_avg'],
+  factory GaugePowerModel.fromJson(Map<String, dynamic> json) {
+    return GaugePowerModel(
+      plant: json['plant'],
+      poaAvg: json['poa_avg'],
+      poaDayAvg: json['poa_day_avg'],
     );
   }
-
 }
