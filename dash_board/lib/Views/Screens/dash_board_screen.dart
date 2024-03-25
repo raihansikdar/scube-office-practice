@@ -1,8 +1,9 @@
 import 'dart:developer';
-import 'package:dash_board/Views/Widgets/card_widget.dart';
-import 'package:dash_board/Views/Widgets/gauge_widget.dart';
-import 'package:dash_board/Views/Widgets/line_chart_widget.dart';
-import 'package:dash_board/Views/Widgets/table_widget.dart';
+import 'package:dash_board/Views/Screens/dgr_screen.dart';
+import 'package:dash_board/Views/Widgets/dash_board_widget/card_widget.dart';
+import 'package:dash_board/Views/Widgets/dash_board_widget/gauge_widget.dart';
+import 'package:dash_board/Views/Widgets/dash_board_widget/line_chart_widget.dart';
+import 'package:dash_board/Views/Widgets/dash_board_widget/table_widget.dart';
 import 'package:dash_board/api_services/card_api_services.dart';
 import 'package:dash_board/api_services/gauge_api_services.dart';
 import 'package:dash_board/api_services/line_chart_api_service.dart';
@@ -173,7 +174,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
                      ],
                    ),
                    onTap: () {
-
+                   Navigator.push(context, MaterialPageRoute(builder: (context)=>const DGRScreen()));
                    },
                  ),
                  ListTile(

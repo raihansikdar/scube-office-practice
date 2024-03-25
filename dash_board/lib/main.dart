@@ -1,4 +1,5 @@
 import 'package:dash_board/Views/Screens/dash_board_screen.dart';
+import 'package:dash_board/Views/Screens/dgr_screen.dart';
 import 'package:dash_board/Views/Screens/splesh_screen.dart';
 import 'package:flutter/material.dart';
 
@@ -27,7 +28,7 @@ class MyApp extends StatelessWidget {
           ),
         ),
       ),
-      home:  const SplashScreen(),
+      home:  const DGRScreen(),
     );
   }
 }
