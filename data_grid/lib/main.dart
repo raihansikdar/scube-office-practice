@@ -276,6 +276,7 @@ class _Combine3ApiState extends State<Combine3Api> {
       Map<String, dynamic> json2 = jsonDecode(response2.body);
       Map<String, dynamic> json3 = jsonDecode(response3.body);
 
+      print(response1.body);
       setState(() {
         json1.forEach((key, value) {
           String formattedKey = key.replaceAll('_', ' ').split(' ').map((String word) => word[0].toUpperCase() + word.substring(1)).join(' ');
@@ -367,7 +368,7 @@ class _Combine3ApiState extends State<Combine3Api> {
   }
 }
 
-class InverterModel {
+/*class InverterModel {
   final String name;
   final dynamic inverter1;
   final dynamic inverter2;
@@ -390,11 +391,72 @@ class InverterModel {
         return 'Invalid Date';
       }
     } else if (data is num) {
+      if(key.contains('voltage')){
+        print( '${data.toStringAsFixed(2)} V');
+          return '${data.toStringAsFixed(2)} V';
+
+      }
       return data.toStringAsFixed(2);
     }
     return data.toString();
   }
+}*/
+
+class InverterModel {
+  final String name;
+  final dynamic inverter1;
+  final dynamic inverter2;
+  final dynamic inverter3;
+
+  InverterModel({
+    required this.name,
+    required this.inverter1,
+    required this.inverter2,
+    required this.inverter3,
+  });
+
+  // String getFormattedData(dynamic data, String key) {
+  //   if (key.contains('pv01_voltage')) {
+  //     if (data is num) {
+  //
+  //       return '${data.toStringAsFixed(2)} V';
+  //     }
+  //   } else if (key == 'tamedate' && data is String) {
+  //     try {
+  //       final parsedDate = DateTime.parse(data);
+  //       final formattedDate = DateFormat('dd/MM/yyyy').format(parsedDate);
+  //       final formattedTime = DateFormat('hh:mm').format(parsedDate);
+  //       return '$formattedDate $formattedTime';
+  //     } catch (e) {
+  //       return 'Invalid Date';
+  //     }
+  //   } else if (data is num) {
+  //     return data.toStringAsFixed(2);
+  //   }
+  //   return data.toString();
+  // }
+
+
+  String getFormattedData(dynamic data, String key) {
+
+   if (key == 'tamedate' && data is String) {
+      try {
+        final parsedDate = DateTime.parse(data);
+        final formattedDate = DateFormat('dd/MM/yyyy').format(parsedDate);
+        final formattedTime = DateFormat('hh:mm').format(parsedDate);
+        return '$formattedDate $formattedTime';
+      } catch (e) {
+        return 'Invalid Date';
+      }
+    }
+    else if (data is num) {
+      return data.toStringAsFixed(2);
+    }
+    return data.toString();
+  }
+
 }
+
 
 class InverterDataSource extends DataGridSource {
   List<DataGridRow> _inverterData = [];
