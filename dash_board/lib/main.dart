@@ -1,12 +1,15 @@
 import 'package:dash_board/Views/Screens/dash_board_screen.dart';
+import 'package:dash_board/Views/Screens/splesh_screen.dart';
 import 'package:flutter/material.dart';
 
+
 void main() {
-  runApp(const MyApp());
+  runApp( MyApp());
 }
 
 class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+   MyApp({super.key});
+
 
   @override
   Widget build(BuildContext context) {
@@ -16,8 +19,15 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: false,
+        textTheme: const TextTheme(
+          headlineSmall: TextStyle(
+            color: Colors.white,
+            fontSize: 46,
+            fontWeight: FontWeight.w800,
+          ),
+        ),
       ),
-      home:  DashBoardScreen(),
+      home:  const SplashScreen(),
     );
   }
 }
