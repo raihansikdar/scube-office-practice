@@ -5,7 +5,5 @@ class StateHoldersBinders extends Bindings{
   @override
   void dependencies() {
     Get.put(PVController());
-
   }
-
 }
