@@ -22,7 +22,7 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
-      home:  HomeScreen(),
+      home:  const InverterDataTable(token: '264ae90790a4275c27829533c55800f05301e308',),
     );
   }
 }
