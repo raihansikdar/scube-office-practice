@@ -76,12 +76,11 @@ class TableScreen extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Temperature Table'),
+        title: const Text('Temperature Table'),
       ),
       body: Column(
         children: [
-        */
-/*  Container(
+  Container(
             color: Colors.orange,
             height: 40,
             child: const Row(
@@ -118,7 +117,7 @@ class TableScreen extends StatelessWidget {
                 ),
               ],
             ),
-          ),*//*
+          ),
 
           Expanded(
             child: Scrollbar(
@@ -168,7 +167,7 @@ class TableScreen extends StatelessWidget {
                                 time: '', moduleTemperature: 0.0));
                         final time = getDateTimeFromString(ambient.time);
                         if (time == null) {
-                          return DataRow(cells: []);
+                          return const DataRow(cells: []);
                         }
                         final formattedTime =
                         DateFormat('hh:mm:ss ').format(time);
@@ -219,4 +218,5 @@ class TableScreen extends StatelessWidget {
       ),
     );
   }
-}*/
+}
+*/

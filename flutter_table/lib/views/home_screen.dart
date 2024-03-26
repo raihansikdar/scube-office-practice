@@ -2,7 +2,9 @@
 import 'dart:convert';
 import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:flutter_table/controllers/pv_controller.dart';
 import 'package:http/http.dart' as http;
 import 'package:intl/intl.dart';
@@ -73,26 +75,10 @@ class _HomeScreenState extends State<HomeScreen> {
     }
   }
 
-  // String _formatValue(String key, String value) {
-  //   if (key == "timedate") {
-  //     // Assuming value is in format "yyyy-mm-ddThh:mm:ss"
-  //     final dateTime = DateTime.parse(value);
-  //     final formattedDate = DateFormat('dd-MM-yyyy').format(dateTime);
-  //     final formattedTime = DateFormat('hh:mm').format(dateTime);
-  //     return '$formattedDate $formattedTime';
-  //   } else {
-  //     return value;
-  //   }
-  // }
+
 
   String _formatValue(String key, String value) {
-    // final voltagePattern = RegExp(r'^pv\d{2}_voltage$');
-    // if (voltagePattern.hasMatch(key)) {
-    //   final formattedValue = double.tryParse(value);
-    //   if (formattedValue != null) {
-    //     return '${formattedValue.toStringAsFixed(2)} V';
-    //   }
-    // }
+
     if ((key.startsWith("pv") && key.endsWith("_voltage")) || (key.startsWith('phase') && key.endsWith("_voltage"))){
       final formattedValue = double.tryParse(value);
       if (formattedValue != null) {
@@ -150,35 +136,96 @@ class _HomeScreenState extends State<HomeScreen> {
         backgroundColor: Colors.cyan,
         title: const Text("data"),
       ),
-      body: SingleChildScrollView(
-        child: isLoading
+      body:isLoading
             ? const Center(child: CircularProgressIndicator())
-            : Expanded(
-              child: DataTable(
-                  columns: const [
-                    DataColumn(label: Text('Attribute')),
-                    DataColumn(label: Text('Inverter 1')),
-                    DataColumn(label: Text('Inverter 2')),
-                    DataColumn(label: Text('Inverter 3')),
-                  ],
-                  rows: invList.isNotEmpty ? invList[0].toJson().entries.map((entry) {
-                    final attribute = _getDisplayName(entry.key);
-                    final inv1Value = entry.value.toString();
-                    final inv2Value = invList[1].toJson()[entry.key].toString();
-                    final inv3Value = invList[2].toJson()[entry.key].toString();
-                    return DataRow(
-                      cells: [
-                        DataCell(Text(attribute)),
-                        DataCell(Text(_formatValue(entry.key, inv1Value))),
-                        DataCell(Text(_formatValue(entry.key, inv2Value))),
-                        DataCell(Text(_formatValue(entry.key, inv3Value))),
-                      ],
-                    );
-                  }).toList()
-                      : [],
+            : Column(
+              children: [
+      Container(
+                  color: Colors.orange,
+                  height: 40,
+                  child: const Row(
+                    children: [
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'Name',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
                       ),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'Inverter 1',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'Inverter 2',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                      Expanded(
+                        child: Center(
+                          child: Text(
+                            'Inverter 3',
+                            style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ),
+                    ],
+                  ),
+                ),
+                Expanded(
+                  child: Scrollbar(
+                    child: ListView(
+                      shrinkWrap: true,
+                      children: [
+                        Container(
+                          transform: Matrix4.translationValues(7.0, -55.0, 0.0),
+                          child: DataTable(
+                              columns: const [
+                                DataColumn(label: Text('',textAlign: TextAlign.center,),numeric: true),
+                                DataColumn(label: Text('',textAlign: TextAlign.center,),numeric: true),
+                                DataColumn(label: Text('',textAlign: TextAlign.center,),numeric: true),
+                                DataColumn(label: Text('',textAlign: TextAlign.center,),numeric: true),
+                              ],
+                              rows: invList.isNotEmpty ? invList[0].toJson().entries.map((entry) {
+                                final attribute = _getDisplayName(entry.key);
+                                final inv1Value = entry.value.toString();
+                                final inv2Value = invList[1].toJson()[entry.key].toString();
+                                final inv3Value = invList[2].toJson()[entry.key].toString();
+                                return DataRow(
+                                  cells: [
+                                    DataCell(Center(child: Text(attribute))),
+                                    DataCell(Center(child: Text(_formatValue(entry.key, inv1Value)))),
+                                    DataCell(Center(child: Text(_formatValue(entry.key, inv2Value)))),
+                                    DataCell(Center(child: Text(_formatValue(entry.key, inv3Value)))),
+                                  ],
+                                );
+                              }).toList()
+                                  : [],
+                                  ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ],
             ),
-      ),
+
     );
   }
 }
