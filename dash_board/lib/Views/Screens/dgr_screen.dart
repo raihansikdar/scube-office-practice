@@ -20,29 +20,27 @@ class _DGRScreenState extends State<DGRScreen> {
   bool irr =true;
   bool todayEnergy =true;
 
+  late List<DgrModel>dgrList = [];
+
   Future<void> fetchFilterData() async {
     const _baseUrl = 'http://192.168.60.60:8000';
     const String authToken = '';
-
     const endPoint = '/filter-dgr-data/';
+
     final response = await http.post(
-      Uri.parse(_baseUrl + endPoint), body: json.encode({
+      Uri.parse(_baseUrl + endPoint), headers: {"Content-Type": "application/json,'Authorization': authToken"}, body: json.encode({
         "start": "2024-03-01 11:23:00.653",
         "end": "2024-03-24 11:25:29.960",
-      }), headers: {"Content-Type": "application/json,'Authorization': authToken"},
+      }),
     );
 
     if (response.statusCode == 200) {
-      // If API call is successful, parse the response
       final List<dynamic> responseData = json.decode(response.body);
       setState(() {
-        _dataPoints = responseData
-            .map<DataPoint>((json) => DataPoint.fromJson(json))
-            .toList();
+        dgrList = responseData.map<DgrModel>((json) => DgrModel.fromJson(json)).toList();
       });
     } else {
-      // Handle error if API call fails
-      print('Failed to load data from API');
+      throw Exception('Failed to load data');
     }
   }
   @override

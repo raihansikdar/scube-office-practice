@@ -40,15 +40,13 @@ class _HomeScreenState extends State<HomeScreen> {
         final pvModelInv2 = PVModel.fromJson(json.decode(response2.body));
         final pvModelInv3 = PVModel.fromJson(json.decode(response3.body));
 
-        // invList.addAll([pvModelInv1, pvModelInv2, pvModelInv3]);
-
         setState(() {
           invList.addAll([pvModelInv1, pvModelInv2, pvModelInv3]);
           isLoading = false;
         });
 
       } else {
-        log('Error: Non-200 status code received.');
+        log('Error: Data can\'t fetch.');
         setState(() {
           isLoading = false;
         });
@@ -66,17 +64,14 @@ class _HomeScreenState extends State<HomeScreen> {
     super.initState();
     getInvData();
   }
+
   String _getDisplayName(String key) {
-    if (key == "timedate") {
-      return "Time & Date";
-    } else {
-      return _capitalizeEachWord(key.split('_').join(' '));
+    return _capitalizeEachWord(key.split('_').join(' '));
     }
-  }
 
 
 
-  String _formatValue(String key, String value) {
+    String _formatValue(String key, String value) {
 
     if ((key.startsWith("pv") && key.endsWith("_voltage")) || (key.startsWith('phase') && key.endsWith("_voltage"))){
       final formattedValue = double.tryParse(value);
@@ -114,14 +109,8 @@ class _HomeScreenState extends State<HomeScreen> {
         return "${(formattedValue * 100).toStringAsFixed(2)} %";
       }
     }
-    if (key == "timedate") {
-      final dateTime = DateTime.parse(value);
-      final formattedDate = DateFormat('dd-MM-yyyy').format(dateTime);
-      final formattedTime = DateFormat('hh:mm a').format(dateTime);
-      return '$formattedDate $formattedTime';
-    } else {
-      return value;
-    }
+
+    return value;
   }
 
 
@@ -134,13 +123,14 @@ class _HomeScreenState extends State<HomeScreen> {
       appBar: AppBar(
         backgroundColor: Colors.cyan,
         title: const Text("data"),
+        centerTitle: true,
       ),
       body:isLoading
             ? const Center(child: CircularProgressIndicator())
             : Column(
               children: [
       Container(
-                  color: Colors.orange,
+                  color: Colors.deepPurple,
                   height: 40,
                   child: const Row(
                     children: [
@@ -150,16 +140,19 @@ class _HomeScreenState extends State<HomeScreen> {
                             'Name',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
                           ),
                         ),
                       ),
+                      SizedBox(width: 40,),
                       Expanded(
                         child: Center(
                           child: Text(
                             'Inverter 1',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
                           ),
                         ),
@@ -168,22 +161,27 @@ class _HomeScreenState extends State<HomeScreen> {
                         child: Center(
                           child: Text(
                             'Inverter 2',
+
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
                           ),
                         ),
                       ),
+
                       Expanded(
                         child: Center(
                           child: Text(
                             'Inverter 3',
                             style: TextStyle(
                               fontWeight: FontWeight.bold,
+                              color: Colors.white,
                             ),
                           ),
                         ),
                       ),
+
                     ],
                   ),
                 ),
@@ -193,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
                       shrinkWrap: true,
                       children: [
                         Container(
-                          transform: Matrix4.translationValues(7.0, -55.0, 0.0),
+                          transform: Matrix4.translationValues(-15.0, -56.0, 0.0),
                           child: DataTable(
                               columns: const [
                                 DataColumn(label: Text('',textAlign: TextAlign.center,),numeric: true),
@@ -230,7 +228,7 @@ class _HomeScreenState extends State<HomeScreen> {
 }
 
 class PVModel {
-  String? timedate;
+ // String? timedate;
   double? pv01Voltage;
   double? pv01Current;
   double? pv02Voltage;
@@ -286,7 +284,8 @@ class PVModel {
   double? dailyEnergyYield;
 
   PVModel(
-      {this.timedate,
+      {
+        //this.timedate,
         this.pv01Voltage,
         this.pv01Current,
         this.pv02Voltage,
@@ -342,7 +341,7 @@ class PVModel {
         this.dailyEnergyYield});
 
   PVModel.fromJson(Map<String, dynamic> json) {
-    timedate = json['timedate'];
+    //timedate = json['timedate'];
     pv01Voltage = json['pv01_voltage'];
     pv01Current = json['pv01_current'];
     pv02Voltage = json['pv02_voltage'];
@@ -400,7 +399,7 @@ class PVModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['timedate'] = timedate;
+   // data['timedate'] = timedate;
     data['pv01_voltage'] = pv01Voltage;
     data['pv01_current'] = pv01Current;
     data['pv02_voltage'] = pv02Voltage;
@@ -458,294 +457,3 @@ class PVModel {
   }
 
 }
-/*
-import 'package:flutter/material.dart';
-import 'dart:convert';
-import 'package:http/http.dart' as http;
-
-class InverterData {
-  final String inverterName;
-  final double pv01Voltage;
-  final double pv01Current;
-  final double pv02Voltage;
-  final double pv02Current;
-  final double pv03Voltage;
-  final double pv03Current;
-  final double inputPower;
-  final double phaseAVoltage;
-  final double phaseBVoltage;
-  final double phaseCVoltage;
-  final double phaseACurrent;
-  final double phaseBCurrent;
-  final double phaseCCurrent;
-  final double activePower;
-  final double gridFrequency;
-  final double efficiency;
-  final double internalTemperature;
-  final double totalEnergyYield;
-  final double dailyEnergyYield;
-
-  InverterData({
-    required this.inverterName,
-    required this.pv01Voltage,
-    required this.pv01Current,
-    required this.pv02Voltage,
-    required this.pv02Current,
-    required this.pv03Voltage,
-    required this.pv03Current,
-    required this.inputPower,
-    required this.phaseAVoltage,
-    required this.phaseBVoltage,
-    required this.phaseCVoltage,
-    required this.phaseACurrent,
-    required this.phaseBCurrent,
-    required this.phaseCCurrent,
-    required this.activePower,
-    required this.gridFrequency,
-    required this.efficiency,
-    required this.internalTemperature,
-    required this.totalEnergyYield,
-    required this.dailyEnergyYield,
-  });
-
-  factory InverterData.fromJson(Map<String, dynamic> json) {
-    return InverterData(
-      inverterName: json['inverter_name'],
-      pv01Voltage: json['pv01_voltage'],
-      pv01Current: json['pv01_current'],
-      pv02Voltage: json['pv02_voltage'],
-      pv02Current: json['pv02_current'],
-      pv03Voltage: json['pv03_voltage'],
-      pv03Current: json['pv03_current'],
-      inputPower: json['input_power'],
-      phaseAVoltage: json['phase_a_voltage'],
-      phaseBVoltage: json['phase_b_voltage'],
-      phaseCVoltage: json['phase_c_voltage'],
-      phaseACurrent: json['phase_a_current'],
-      phaseBCurrent: json['phase_b_current'],
-      phaseCCurrent: json['phase_c_current'],
-      activePower: json['active_power'],
-      gridFrequency: json['grid_frequency'],
-      efficiency: json['efficiency'],
-      internalTemperature: json['internal_temperature'],
-      totalEnergyYield: json['total_energy_yield'],
-      dailyEnergyYield: json['daily_energy_yield'],
-    );
-  }
-}
-
-class InverterDataTable extends StatelessWidget {
-  final String token;
-
-  const InverterDataTable({Key? key, required this.token}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        automaticallyImplyLeading: false,
-        backgroundColor: Colors.deepPurple,
-        centerTitle: true,
-        title: const Text(
-          'Energy Monitoring System',
-        ),
-      ),
-      body: FutureBuilder<List<InverterData>>(
-        future: ApiService.fetchInverterData(token),
-        builder: (context, snapshot) {
-          if (snapshot.connectionState == ConnectionState.waiting) {
-            return const Center(child: CircularProgressIndicator());
-          } else if (snapshot.hasError) {
-            return Text('Error: ${snapshot.error}');
-          } else {
-            final data = snapshot.data!;
-            return SingleChildScrollView(
-              scrollDirection: Axis.horizontal,
-              child: _FixedColumnDataTable(
-                leftColumns: _buildLeftColumns(data),
-                rightColumns: _buildRightColumns(data),
-                rows: _buildRows(data),
-              ),
-            );
-          }
-        },
-      ),
-    );
-  }
-
-  List<DataColumn> _buildLeftColumns(List<InverterData> data) {
-    return [
-      const DataColumn(label: Text('Inverter Name')),
-    ];
-  }
-
-  List<DataColumn> _buildRightColumns(List<InverterData> data) {
-    return List.generate(data.length, (index) {
-      return DataColumn(label: Text('Inverter ${index + 1}'));
-    });
-  }
-
-  List<DataRow> _buildRows(List<InverterData> data) {
-    List<DataRow> rows = [];
-    final attributes = [
-      'PV01 Voltage',
-      'PV01 Current',
-      'PV02 Voltage',
-      'PV02 Current',
-      'PV03 Voltage',
-      'PV03 Current',
-      'Input Power',
-      'Phase A Voltage',
-      'Phase B Voltage',
-      'Phase C Voltage',
-      'Phase A Current',
-      'Phase B Current',
-      'Phase C Current',
-      'Active Power',
-      'Grid Frequency',
-      'Efficiency',
-      'Internal Temperature',
-      'Total Energy Yield',
-      'Daily Energy Yield',
-      // Add other attributes here if needed
-    ];
-
-    for (String attribute in attributes) {
-      List<DataCell> cells = [DataCell(
-        Text(
-          attribute,
-          textAlign: TextAlign.center, // Align center for attribute name
-        ),
-      )
-      ];
-      cells.addAll(data.map((inverter) =>
-          DataCell(
-            Text(
-              _getAttributeValue(inverter, attribute),
-              textAlign: TextAlign.center, // Align center for attribute value
-            ),
-          )));
-      rows.add(DataRow(cells: cells));
-    }
-
-    return rows;
-  }
-
-  String _getAttributeValue(InverterData inverter, String attribute) {
-    switch (attribute) {
-      case 'PV01 Voltage':
-      case 'PV02 Voltage':
-      case 'PV03 Voltage':
-      case 'Phase A Voltage':
-      case 'Phase B Voltage':
-      case 'Phase C Voltage':
-        return '${inverter.phaseAVoltage.toStringAsFixed(
-            2)} V'; // Example: 123.45 V
-      case 'PV01 Current':
-      case 'PV02 Current':
-      case 'PV03 Current':
-      case 'Phase A Current':
-      case 'Phase B Current':
-      case 'Phase C Current':
-        return '${inverter.phaseACurrent.toStringAsFixed(
-            2)} A'; // Example: 12.34 A
-      case 'Input Power':
-      case 'Active Power':
-        return '${inverter.activePower.toStringAsFixed(
-            2)} kW'; // Example: 123.45 kW
-      case 'Grid Frequency':
-        return '${inverter.gridFrequency.toStringAsFixed(
-            2)} Hz'; // Example: 50.00 Hz
-      case 'Efficiency':
-        return '${(inverter.efficiency * 100).toStringAsFixed(
-            2)} %'; // Example: 95.00 %
-      case 'Internal Temperature':
-        return '${inverter.internalTemperature.toStringAsFixed(
-            2)} °C'; // Example: 30.00 °C
-      case 'Total Energy Yield':
-      case 'Daily Energy Yield':
-        return '${inverter.totalEnergyYield.toStringAsFixed(
-            2)} kWh'; // Example: 123.45 kWh
-      default:
-        return '';
-    }
-  }
-}
-
-class ApiService {
-  static const baseUrl = 'https://scubetech.xyz/kazi-habibpur';
-  static Future<List<InverterData>> fetchInverterData(String token) async {
-    final Map<String, String> headers = {
-      'Authorization': 'Token $token',
-      'Content-Type': 'application/json',
-    };
-    final List<http.Response> responses = await Future.wait([
-      http.get(Uri.parse('$baseUrl/inverter-live/Inverter01/'), headers: headers),
-      http.get(Uri.parse('$baseUrl/inverter-live/Inverter02/'), headers: headers),
-      http.get(Uri.parse('$baseUrl/inverter-live/Inverter03/'), headers: headers),
-    ]);
-    List<InverterData> combinedData = [];
-    for (final response in responses) {
-      if (response.statusCode == 200) {
-        final dynamic jsonData = jsonDecode(response.body);
-
-        if (jsonData is Map<String, dynamic>) {
-          String inverterName = 'Inverter ${combinedData.length + 1}';
-          combinedData.add(InverterData.fromJson(jsonData.copyWith({'inverter_name': inverterName})));
-        } else if (jsonData is List) {
-          // Handle lists of data if needed
-          combinedData.addAll(jsonData.map((e) {
-            String inverterName = 'Inverter ${combinedData.length + 1}';
-            return InverterData.fromJson(e.copyWith({'inverter_name': inverterName}));
-          }).toList());
-        } else {
-          throw Exception('Invalid data format');
-        }
-      } else {
-        throw Exception('Failed to load inverter data: ${response.statusCode}');
-      }
-    }
-
-    return combinedData;
-  }
-}
-
-extension MapExtension on Map<String, dynamic> {
-  Map<String, dynamic> copyWith(Map<String, dynamic> newEntries) {
-    return Map<String, dynamic>.from(this)..addAll(newEntries);
-  }
-}
-
-class _FixedColumnDataTable extends StatelessWidget {
-  final List<DataColumn> leftColumns;
-  final List<DataColumn> rightColumns;
-  final List<DataRow> rows;
-
-  const _FixedColumnDataTable({
-    Key? key,
-    required this.leftColumns,
-    required this.rightColumns,
-    required this.rows,
-  }) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return SingleChildScrollView(
-      scrollDirection: Axis.horizontal,
-      child: SingleChildScrollView(
-        scrollDirection: Axis.vertical,
-        child: ConstrainedBox(
-          constraints: BoxConstraints(minWidth: MediaQuery.of(context).size.width),
-          child: DataTable(
-            columnSpacing: 20.0, // Adjust the spacing between columns
-            columns: [
-              ...leftColumns,
-              ...rightColumns,
-            ],
-            rows: rows,
-          ),
-        ),
-      ),
-    );
-  }
-}*/

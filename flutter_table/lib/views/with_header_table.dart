@@ -40,15 +40,13 @@ class _HomeScreenWithHeaderState extends State<HomeScreenWithHeader> {
         final pvModelInv2 = PVModel.fromJson(json.decode(response2.body));
         final pvModelInv3 = PVModel.fromJson(json.decode(response3.body));
 
-        // invList.addAll([pvModelInv1, pvModelInv2, pvModelInv3]);
-
         setState(() {
           invList.addAll([pvModelInv1, pvModelInv2, pvModelInv3]);
           isLoading = false;
         });
 
       } else {
-        log('Error: Non-200 status code received.');
+        log('Error: Data can\'t fetch.');
         setState(() {
           isLoading = false;
         });
@@ -66,12 +64,15 @@ class _HomeScreenWithHeaderState extends State<HomeScreenWithHeader> {
     super.initState();
     getInvData();
   }
+  // String _getDisplayName(String key) {
+  //   if (key == "timedate") {
+  //     return "Time & Date";
+  //   } else {
+  //     return _capitalizeEachWord(key.split('_').join(' '));
+  //   }
+  // }
   String _getDisplayName(String key) {
-    if (key == "timedate") {
-      return "Time & Date";
-    } else {
-      return _capitalizeEachWord(key.split('_').join(' '));
-    }
+    return _capitalizeEachWord(key.split('_').join(' '));
   }
 
 
@@ -114,14 +115,16 @@ class _HomeScreenWithHeaderState extends State<HomeScreenWithHeader> {
         return "${(formattedValue * 100).toStringAsFixed(2)} %";
       }
     }
-    if (key == "timedate") {
-      final dateTime = DateTime.parse(value);
-      final formattedDate = DateFormat('dd-MM-yyyy').format(dateTime);
-      final formattedTime = DateFormat('hh:mm a').format(dateTime);
-      return '$formattedDate $formattedTime';
-    } else {
-      return value;
-    }
+    // if (key == "timedate") {
+    //   final dateTime = DateTime.parse(value);
+    //   final formattedDate = DateFormat('dd-MM-yyyy').format(dateTime);
+    //   final formattedTime = DateFormat('hh:mm a').format(dateTime);
+    //   return '$formattedDate $formattedTime';
+    // } else {
+    //   return value;
+    // }
+
+    return value;
   }
 
 
@@ -134,13 +137,14 @@ class _HomeScreenWithHeaderState extends State<HomeScreenWithHeader> {
       appBar: AppBar(
         backgroundColor: Colors.cyan,
         title: const Text("data"),
+        centerTitle: true,
       ),
       body:isLoading
           ? const Center(child: CircularProgressIndicator())
           : Column(
         children: [
           Container(
-            color: Colors.orange,
+            color: Colors.deepPurple,
             height: 40,
             child: const Row(
               children: [
@@ -150,6 +154,7 @@ class _HomeScreenWithHeaderState extends State<HomeScreenWithHeader> {
                       'Name',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -160,6 +165,7 @@ class _HomeScreenWithHeaderState extends State<HomeScreenWithHeader> {
                       'Inverter 1',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -170,6 +176,7 @@ class _HomeScreenWithHeaderState extends State<HomeScreenWithHeader> {
                       'Inverter 2',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -180,6 +187,7 @@ class _HomeScreenWithHeaderState extends State<HomeScreenWithHeader> {
                       'Inverter 3',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
+                        color: Colors.white,
                       ),
                     ),
                   ),
@@ -193,7 +201,7 @@ class _HomeScreenWithHeaderState extends State<HomeScreenWithHeader> {
                 shrinkWrap: true,
                 children: [
                   Container(
-                    transform: Matrix4.translationValues(7.0, -55.0, 0.0),
+                    transform: Matrix4.translationValues(7.0, -56.0, 0.0),
                     child: DataTable(
                       columns: const [
                         DataColumn(label: Text('',textAlign: TextAlign.center,),numeric: true),
@@ -202,7 +210,9 @@ class _HomeScreenWithHeaderState extends State<HomeScreenWithHeader> {
                         DataColumn(label: Text('',textAlign: TextAlign.center,),numeric: true),
                       ],
                       rows: invList.isNotEmpty ? invList[0].toJson().entries.map((entry) {
+                        //final entry = invList[0].toJson().entries.elementAt(0);
                         final attribute = _getDisplayName(entry.key);
+
                         final inv1Value = entry.value.toString();
                         final inv2Value = invList[1].toJson()[entry.key].toString();
                         final inv3Value = invList[2].toJson()[entry.key].toString();
@@ -230,7 +240,7 @@ class _HomeScreenWithHeaderState extends State<HomeScreenWithHeader> {
 }
 
 class PVModel {
-  String? timedate;
+  // String? timedate;
   double? pv01Voltage;
   double? pv01Current;
   double? pv02Voltage;
@@ -286,7 +296,8 @@ class PVModel {
   double? dailyEnergyYield;
 
   PVModel(
-      {this.timedate,
+      {
+        //this.timedate,
         this.pv01Voltage,
         this.pv01Current,
         this.pv02Voltage,
@@ -342,7 +353,7 @@ class PVModel {
         this.dailyEnergyYield});
 
   PVModel.fromJson(Map<String, dynamic> json) {
-    timedate = json['timedate'];
+    //timedate = json['timedate'];
     pv01Voltage = json['pv01_voltage'];
     pv01Current = json['pv01_current'];
     pv02Voltage = json['pv02_voltage'];
@@ -400,7 +411,7 @@ class PVModel {
 
   Map<String, dynamic> toJson() {
     final Map<String, dynamic> data = <String, dynamic>{};
-    data['timedate'] = timedate;
+    // data['timedate'] = timedate;
     data['pv01_voltage'] = pv01Voltage;
     data['pv01_current'] = pv01Current;
     data['pv02_voltage'] = pv02Voltage;
