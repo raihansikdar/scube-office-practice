@@ -74,8 +74,6 @@ class _SplashScreenState extends State<SplashScreen> {
   }
 
 
-
-
   @override
   void initState() {
     goTONextPage();
@@ -112,7 +110,7 @@ class _SplashScreenState extends State<SplashScreen> {
               ),
               const SizedBox(width: 20.0, height: 100.0),
               DefaultTextStyle(
-                style: TextStyle(
+                style: const TextStyle(
                     fontSize: 24,
                     fontWeight: FontWeight.bold,
                     color: Colors.deepPurple),

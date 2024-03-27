@@ -1,7 +1,5 @@
 import 'dart:convert';
 import 'dart:developer';
-
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
@@ -16,24 +14,32 @@ class DGRScreen extends StatefulWidget {
 
 class _DGRScreenState extends State<DGRScreen> {
 
-  String? selectFirstData;
-  String? selectLastData;
+  // String selectFirstData = DateFormat("yyyy-MM-dd").format(DateTime.now());
+  // String selectLastData =  DateFormat("yyyy-MM-dd").format(DateTime.now());
+
+  String selectFirstData = DateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(DateTime.now());
+  String selectLastData = DateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(DateTime.now());
   bool pr =true;
   bool acPower =true;
   bool irr =true;
   bool todayEnergy =true;
+  bool isLoading = false;
 
   late List<DgrModel>dgrList = [];
 
-  Future<void> fetchFilterData() async {
+  Future<void> fetchFilterData(String startDate,String endDate) async {
     const _baseUrl = 'http://192.168.60.60:8000';
     const String authToken = '';
     const endPoint = '/filter-dgr-data/';
 
+     setState(() {
+       isLoading = true;
+     });
+
     final response = await http.post(
       Uri.parse(_baseUrl + endPoint), headers: {"Content-Type": "application/json",'Authorization': authToken}, body: json.encode({
-        "start": "2024-03-01 11:23:00.653",
-        "end": "2024-03-24 11:25:29.960",
+        "start": startDate,
+        "end": endDate,
       }),
     );
     log(response.statusCode.toString());
@@ -46,12 +52,15 @@ class _DGRScreenState extends State<DGRScreen> {
     } else {
       throw Exception('Failed to load data');
     }
-  }
 
+    setState(() {
+      isLoading = false;
+    });
+  }
 
   @override
   void initState() {
-    fetchFilterData();
+      fetchFilterData(selectFirstData, selectLastData);
     super.initState();
   }
   @override
@@ -60,7 +69,6 @@ class _DGRScreenState extends State<DGRScreen> {
       appBar: AppBar(
         title: const Text('DGR Screen'),
       ),
-
       body: Padding(
         padding: const EdgeInsets.all(12.0),
         child: Column(
@@ -92,13 +100,12 @@ class _DGRScreenState extends State<DGRScreen> {
                     style: OutlinedButton.styleFrom(
                       shape: const StadiumBorder(),
                     ),
-                    onPressed: (){}, child: const Text('Submit'))
+                    onPressed: (){
+                        fetchFilterData(selectFirstData, selectLastData);
+                    }, child: const Text('Submit'))
               ],
             ),
              const SizedBox(height: 10.0,),
-
-
-
             Row(
               children: [
                 SizedBox(
@@ -134,8 +141,7 @@ class _DGRScreenState extends State<DGRScreen> {
                               const Text('PR'),
                               const Spacer(),
                               Checkbox(
-                                // fillColor: Colors.grey,
-                                // checkColor: Colors.deepPurple,
+                                activeColor: Colors.deepPurple,
                                 value: pr,
                                 onChanged: (val) {
                                   setState(() {
@@ -158,8 +164,7 @@ class _DGRScreenState extends State<DGRScreen> {
                               const Text('AC Power'),
                               const Spacer(),
                               Checkbox(
-                                // fillColor: Colors.grey,
-                                // checkColor: Colors.deepPurple,
+                                activeColor: Colors.deepPurple,
                                 value: acPower,
                                 onChanged: (val) {
                                   setState(() {
@@ -182,8 +187,7 @@ class _DGRScreenState extends State<DGRScreen> {
                               const Text('Irr'),
                               const Spacer(),
                               Checkbox(
-                                // fillColor: Colors.grey,
-                                // checkColor: Colors.deepPurple,
+                                activeColor: Colors.deepPurple,
                                 value: irr,
                                 onChanged: (val) {
                                   setState(() {
@@ -206,6 +210,7 @@ class _DGRScreenState extends State<DGRScreen> {
                               const Text('Today Energy'),
                               const Spacer(),
                               Checkbox(
+                                activeColor: Colors.deepPurple,
                                 value: todayEnergy,
                                 onChanged: (val) {
                                   setState(() {
@@ -221,19 +226,62 @@ class _DGRScreenState extends State<DGRScreen> {
                     ),
                   ),
                 ),
-
-                dgrList.isEmpty
+                const SizedBox(width: 20,),
+                isLoading
                     ? const Center(child: CircularProgressIndicator())
-                    :  SfCartesianChart(
-                     series: <CartesianSeries>[
-                       SplineSeries<DgrModel, DateTime>(
-                         dataSource: dgrList,
-                         xValueMapper: (DgrModel dgr, _) => dgr.timedate,
-                         yValueMapper: (DgrModel dgr, _) => dgr.pr,
-                         name: 'PR',
-                       )
-                     ],
-                )
+                    :
+                Expanded(
+                      child: SfCartesianChart(
+                        title: const ChartTitle(text: 'Selected Data DGR',borderWidth: 10,backgroundColor: Colors.deepPurple,textStyle: TextStyle(color: Colors.white,)),
+                        trackballBehavior: TrackballBehavior(
+                          enable: true,
+                          tooltipAlignment: ChartAlignment.near,
+                          tooltipDisplayMode: TrackballDisplayMode.groupAllPoints,
+                          activationMode: ActivationMode.singleTap,
+                        ),
+                        primaryXAxis: DateTimeAxis(
+                          dateFormat: DateFormat('dd/MM/yyyy'),
+                          //minimum: DateTime.now().subtract(const Duration(days: 7)),
+                          //maximum: DateTime.now(),
+                          minimum: dgrList.isNotEmpty ? null : DateTime.parse(selectFirstData),
+                          maximum: dgrList.isNotEmpty ? null : DateTime.parse(selectLastData),
+                        ),
+                      series: <CartesianSeries>[
+                        if (pr)
+                          SplineSeries<DgrModel, DateTime>(
+                            name: 'PR',
+                            dataSource: dgrList,
+                            pointColorMapper: (DgrModel data, _) => Colors.amber,
+                            xValueMapper: (DgrModel dgr, _) => dgr.timedate,
+                            yValueMapper: (DgrModel dgr, _) => dgr.pr,
+                          ),
+                         if(acPower)
+                           SplineSeries<DgrModel, DateTime>(
+                             dataSource: dgrList,
+                             pointColorMapper:(DgrModel data, _) => Colors.deepPurple,
+                             xValueMapper: (DgrModel dgr, _) => dgr.timedate,
+                             yValueMapper: (DgrModel dgr, _) => dgr.acPower,
+                             name: 'AC Power',
+                           ),
+                        if(irr)
+                          SplineSeries<DgrModel, DateTime>(
+                            dataSource: dgrList,
+                            pointColorMapper:(DgrModel data, _) => Colors.black,
+                            xValueMapper: (DgrModel dgr, _) => dgr.timedate,
+                            yValueMapper: (DgrModel dgr, _) => dgr.irr,
+                            name: 'Irr',
+                          ),
+                        if(todayEnergy)
+                          SplineSeries<DgrModel, DateTime>(
+                            dataSource: dgrList,
+                            pointColorMapper:(DgrModel data, _) => Colors.brown,
+                            xValueMapper: (DgrModel dgr, _) => dgr.timedate,
+                            yValueMapper: (DgrModel dgr, _) => dgr.todayEnergy,
+                            name: 'Today Energy',
+                          )
+                      ],
+                      ),
+                    ),
               ],
             )
           ],
@@ -241,17 +289,16 @@ class _DGRScreenState extends State<DGRScreen> {
       ),
     );
   }
-
-  void firstDatePicker() async{
+ /* void firstDatePicker() async{
     DateTime? _picker = await showDatePicker(
       context: context,
-      initialDate: DateTime.now(),
+      initialDate: DateTime.now().toLocal(),
       firstDate: DateTime(2020),
       lastDate: DateTime(2130),
     );
-
     if(_picker != null){
       String formattedDate = DateFormat("yyyy-MM-dd").format(_picker);
+
       selectFirstData = formattedDate.toString();
       setState(() {});
     }
@@ -269,15 +316,74 @@ class _DGRScreenState extends State<DGRScreen> {
       selectLastData = formattedDate.toString();
       setState(() {});
     }
+  }*/
+
+  void firstDatePicker() async{
+    DateTime? _datePicker = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2130),
+    );
+
+    if(_datePicker != null){
+      TimeOfDay? _timePicker = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+      );
+
+      if (_timePicker != null) {
+        DateTime selectedDateTime = DateTime(
+          _datePicker.year,
+          _datePicker.month,
+          _datePicker.day,
+          _timePicker.hour,
+          _timePicker.minute,
+        );
+
+        String formattedDateTime = DateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(selectedDateTime);
+        selectFirstData = formattedDateTime;
+        log(selectedDateTime.toString());
+        setState(() {});
+      }
+    }
   }
+
+  void lastDatePicker() async{
+    DateTime? _datePicker = await showDatePicker(
+      context: context,
+      initialDate: DateTime.now(),
+      firstDate: DateTime(2020),
+      lastDate: DateTime(2130),
+    );
+
+    if(_datePicker != null){
+      TimeOfDay? _timePicker = await showTimePicker(
+        context: context,
+        initialTime: TimeOfDay.now(),
+      );
+
+      if (_timePicker != null) {
+        DateTime selectedDateTime = DateTime(
+          _datePicker.year,
+          _datePicker.month,
+          _datePicker.day,
+          _timePicker.hour,
+          _timePicker.minute,
+        );
+
+        String formattedDateTime = DateFormat("yyyy-MM-dd HH:mm:ss.SSS").format(selectedDateTime);
+        selectLastData = formattedDateTime;
+        setState(() {});
+      }
+    }
+  }
+
+
+
+
+
 }
-
-
-
-
-/*List<DgrModel> dgrModelFromJson(String str) => List<DgrModel>.from(json.decode(str).map((x) => DgrModel.fromJson(x)));
-
-String dgrModelToJson(List<DgrModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));*/
 
 class DgrModel {
   DateTime timedate;
