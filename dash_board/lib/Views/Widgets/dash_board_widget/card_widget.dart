@@ -16,7 +16,7 @@ class CardWidget extends StatelessWidget {
         //----------- Generation-------
         Expanded(
           child: SizedBox(
-            height: 150,
+            height: 160,
             child: Card(
               color: Colors.white,
               shape: RoundedRectangleBorder(
@@ -89,7 +89,7 @@ class CardWidget extends StatelessWidget {
         //----------- Temperature-------
         Expanded(
           child: SizedBox(
-            height: 150,
+            height: 160,
             child: Card(
               color: Colors.white,
               shape: RoundedRectangleBorder(
@@ -162,7 +162,7 @@ class CardWidget extends StatelessWidget {
         //----------- Radiation-------
         Expanded(
           child: SizedBox(
-            height: 150,
+            height: 160,
             child: Card(
               color: Colors.white,
               shape: RoundedRectangleBorder(
@@ -285,7 +285,7 @@ class CardWidget extends StatelessWidget {
         //----------- Gross Profit-------
         Expanded(
           child: SizedBox(
-            height: 150,
+            height: 160,
             child: Card(
               color: Colors.white,
               shape: RoundedRectangleBorder(
