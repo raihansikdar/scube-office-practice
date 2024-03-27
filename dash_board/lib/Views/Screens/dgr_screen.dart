@@ -1,8 +1,11 @@
 import 'dart:convert';
+import 'dart:developer';
 
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:http/http.dart' as http;
+import 'package:syncfusion_flutter_charts/charts.dart';
 
 class DGRScreen extends StatefulWidget {
   const DGRScreen({super.key});
@@ -28,12 +31,13 @@ class _DGRScreenState extends State<DGRScreen> {
     const endPoint = '/filter-dgr-data/';
 
     final response = await http.post(
-      Uri.parse(_baseUrl + endPoint), headers: {"Content-Type": "application/json,'Authorization': authToken"}, body: json.encode({
+      Uri.parse(_baseUrl + endPoint), headers: {"Content-Type": "application/json",'Authorization': authToken}, body: json.encode({
         "start": "2024-03-01 11:23:00.653",
         "end": "2024-03-24 11:25:29.960",
       }),
     );
-
+    log(response.statusCode.toString());
+    log(response.body);
     if (response.statusCode == 200) {
       final List<dynamic> responseData = json.decode(response.body);
       setState(() {
@@ -42,6 +46,13 @@ class _DGRScreenState extends State<DGRScreen> {
     } else {
       throw Exception('Failed to load data');
     }
+  }
+
+
+  @override
+  void initState() {
+    fetchFilterData();
+    super.initState();
   }
   @override
   Widget build(BuildContext context) {
@@ -87,127 +98,144 @@ class _DGRScreenState extends State<DGRScreen> {
              const SizedBox(height: 10.0,),
 
 
-             //------------------Power card-------------
-             SizedBox(
-               width: 180,
-               child: Card(
-                 shape: RoundedRectangleBorder(
-                   side: const BorderSide(
-                     color: Colors.deepPurple,
-                     width: 1.0,
-                   ),
-                   borderRadius: BorderRadius.circular(8.0),
-                 ),
-                child: Column(
-                  children: [
-                   const Padding(
-                     padding: EdgeInsets.all(12.0),
-                     child: Row(
-                       children: [
-                         Text("Data",style: TextStyle(fontSize: 14.0,fontWeight: FontWeight.w600),),
-                         Spacer(),
-                         Text("Show",style: TextStyle(fontSize: 14.0,fontWeight: FontWeight.w600),),
-                       ],
-                     ),
-                   ),
-                    const Divider(
-                     color: Colors.deepPurple,
-                      thickness: 1,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: Row(
-                        children: [
-                          const Text('PR'),
-                         const Spacer(),
-                          Checkbox(
-                            // fillColor: Colors.grey,
-                            // checkColor: Colors.deepPurple,
-                            value: pr,
-                            onChanged: (val) {
-                              setState(() {
-                                pr = val!;
-                              });
-                            },
-                          ),
 
-                        ],
+            Row(
+              children: [
+                SizedBox(
+                  width: 180,
+                  child: Card(
+                    shape: RoundedRectangleBorder(
+                      side: const BorderSide(
+                        color: Colors.deepPurple,
+                        width: 1.0,
                       ),
+                      borderRadius: BorderRadius.circular(8.0),
                     ),
-                    const Divider(
-                      color: Colors.deepPurple,
-                      thickness: 1,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: Row(
-                        children: [
-                          const Text('AC Power'),
-                          const Spacer(),
-                          Checkbox(
-                            // fillColor: Colors.grey,
-                            // checkColor: Colors.deepPurple,
-                            value: acPower,
-                            onChanged: (val) {
-                              setState(() {
-                                acPower = val!;
-                              });
-                            },
+                    child: Column(
+                      children: [
+                        const Padding(
+                          padding: EdgeInsets.all(12.0),
+                          child: Row(
+                            children: [
+                              Text("Data",style: TextStyle(fontSize: 14.0,fontWeight: FontWeight.w600),),
+                              Spacer(),
+                              Text("Show",style: TextStyle(fontSize: 14.0,fontWeight: FontWeight.w600),),
+                            ],
                           ),
+                        ),
+                        const Divider(
+                          color: Colors.deepPurple,
+                          thickness: 1,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          child: Row(
+                            children: [
+                              const Text('PR'),
+                              const Spacer(),
+                              Checkbox(
+                                // fillColor: Colors.grey,
+                                // checkColor: Colors.deepPurple,
+                                value: pr,
+                                onChanged: (val) {
+                                  setState(() {
+                                    pr = val!;
+                                  });
+                                },
+                              ),
 
-                        ],
-                      ),
-                    ),
-                    const Divider(
-                      color: Colors.deepPurple,
-                      thickness: 1,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 12.0),
-                      child: Row(
-                        children: [
-                          const Text('Irr'),
-                          const Spacer(),
-                          Checkbox(
-                            // fillColor: Colors.grey,
-                            // checkColor: Colors.deepPurple,
-                            value: irr,
-                            onChanged: (val) {
-                              setState(() {
-                                irr = val!;
-                              });
-                            },
+                            ],
                           ),
+                        ),
+                        const Divider(
+                          color: Colors.deepPurple,
+                          thickness: 1,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          child: Row(
+                            children: [
+                              const Text('AC Power'),
+                              const Spacer(),
+                              Checkbox(
+                                // fillColor: Colors.grey,
+                                // checkColor: Colors.deepPurple,
+                                value: acPower,
+                                onChanged: (val) {
+                                  setState(() {
+                                    acPower = val!;
+                                  });
+                                },
+                              ),
 
-                        ],
-                      ),
-                    ),
-                    const Divider(
-                      color: Colors.deepPurple,
-                      thickness: 1,
-                    ),
-                    Padding(
-                      padding: const EdgeInsets.symmetric(vertical: 2.0,horizontal: 12.0),
-                      child: Row(
-                        children: [
-                          const Text('Today Energy'),
-                          const Spacer(),
-                          Checkbox(
-                            value: todayEnergy,
-                            onChanged: (val) {
-                              setState(() {
-                                todayEnergy = val!;
-                              });
-                            },
+                            ],
                           ),
+                        ),
+                        const Divider(
+                          color: Colors.deepPurple,
+                          thickness: 1,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(horizontal: 12.0),
+                          child: Row(
+                            children: [
+                              const Text('Irr'),
+                              const Spacer(),
+                              Checkbox(
+                                // fillColor: Colors.grey,
+                                // checkColor: Colors.deepPurple,
+                                value: irr,
+                                onChanged: (val) {
+                                  setState(() {
+                                    irr = val!;
+                                  });
+                                },
+                              ),
 
-                        ],
-                      ),
+                            ],
+                          ),
+                        ),
+                        const Divider(
+                          color: Colors.deepPurple,
+                          thickness: 1,
+                        ),
+                        Padding(
+                          padding: const EdgeInsets.symmetric(vertical: 2.0,horizontal: 12.0),
+                          child: Row(
+                            children: [
+                              const Text('Today Energy'),
+                              const Spacer(),
+                              Checkbox(
+                                value: todayEnergy,
+                                onChanged: (val) {
+                                  setState(() {
+                                    todayEnergy = val!;
+                                  });
+                                },
+                              ),
+
+                            ],
+                          ),
+                        ),
+                      ],
                     ),
-                  ],
+                  ),
                 ),
-                ),
-             )
+
+                dgrList.isEmpty
+                    ? const Center(child: CircularProgressIndicator())
+                    :  SfCartesianChart(
+                     series: <CartesianSeries>[
+                       SplineSeries<DgrModel, DateTime>(
+                         dataSource: dgrList,
+                         xValueMapper: (DgrModel dgr, _) => dgr.timedate,
+                         yValueMapper: (DgrModel dgr, _) => dgr.pr,
+                         name: 'PR',
+                       )
+                     ],
+                )
+              ],
+            )
           ],
         ),
       ),
@@ -243,30 +271,42 @@ class _DGRScreenState extends State<DGRScreen> {
     }
   }
 }
+
+
+
+
+/*List<DgrModel> dgrModelFromJson(String str) => List<DgrModel>.from(json.decode(str).map((x) => DgrModel.fromJson(x)));
+
+String dgrModelToJson(List<DgrModel> data) => json.encode(List<dynamic>.from(data.map((x) => x.toJson())));*/
+
 class DgrModel {
-  String? timedate;
-  double? pr;
-  int? acPower;
-  int? irr;
-  double? todayEnergy;
+  DateTime timedate;
+  double pr;
+  double acPower;
+  double irr;
+  double todayEnergy;
 
-  DgrModel({this.timedate, this.pr, this.acPower, this.irr, this.todayEnergy});
+  DgrModel({
+    required this.timedate,
+    required this.pr,
+    required this.acPower,
+    required this.irr,
+    required this.todayEnergy,
+  });
 
-  DgrModel.fromJson(Map<String, dynamic> json) {
-    timedate = json['timedate'];
-    pr = json['pr'];
-    acPower = json['ac_power'];
-    irr = json['irr'];
-    todayEnergy = json['today_energy'];
-  }
+  factory DgrModel.fromJson(Map<String, dynamic> json) => DgrModel(
+    timedate: DateTime.parse(json["timedate"]),
+    pr: json["pr"]?.toDouble(),
+    acPower: json["ac_power"]?.toDouble(),
+    irr: json["irr"]?.toDouble(),
+    todayEnergy: json["today_energy"]?.toDouble(),
+  );
 
-  Map<String, dynamic> toJson() {
-    final Map<String, dynamic> data = Map<String, dynamic>();
-    data['timedate'] = timedate;
-    data['pr'] = pr;
-    data['ac_power'] = acPower;
-    data['irr'] = irr;
-    data['today_energy'] = todayEnergy;
-    return data;
-  }
+  Map<String, dynamic> toJson() => {
+    "timedate": timedate.toIso8601String(),
+    "pr": pr,
+    "ac_power": acPower,
+    "irr": irr,
+    "today_energy": todayEnergy,
+  };
 }
