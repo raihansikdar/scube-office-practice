@@ -52,7 +52,7 @@ class SidebarMenuWidget extends StatelessWidget {
               children: [
                 Image.asset(
                   'assets/images/logo.png',
-                  height: 150,
+                  height: 100,
                 ),
                 const Text("Solar Monitoring System",style: TextStyle(color: Colors.white),)
               ],

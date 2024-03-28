@@ -44,15 +44,15 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     try {
       final cardData = await CardApiServices.fetchCardData();
       final gaugeData = await GaugeApiService.fetchGaugeData();
-      final todayData = await TableApiService.fetchTableData('/single-shed_wise-data/');
-      final yesterdayData = await TableApiService.fetchTableData('/single-yesterday-data/');
+      final todayData = await TableApiService.fetchTableData('/single-today-data/');
+       final yesterdayData = await TableApiService.fetchTableData('/single-yesterday-data/');
       final Map<String, dynamic> responseData = await LineChartApiService.fetchLineChartData();
 
       setState(() {
         cardPowerModelData = cardData;
         gaugePowerModelData = gaugeData;
-        final allData = [...todayData, ...yesterdayData];
-        inverterDataSource = InverterDataSource(inverterModelData: allData);
+       final allData = [...todayData, ...yesterdayData];
+       inverterDataSource = InverterDataSource(inverterModelData: allData);
 
         spChartData = (responseData['radiation_today'] as List).map((e) => SpChartDataModel.fromJson(e)).toList();
         powerChartData = (responseData['power_today'] as List).map((e) => PowerChartDataModel.fromJson(e)).toList();
