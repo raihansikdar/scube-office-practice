@@ -80,6 +80,7 @@ class SidebarMenuWidget extends StatelessWidget {
           title: 'Home',
           onTap: (index, _) {
             sideMenu.changePage(index);
+            
           },
           icon: const Icon(Icons.home,),
 
