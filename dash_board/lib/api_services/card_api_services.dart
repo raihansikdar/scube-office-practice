@@ -8,7 +8,7 @@ class CardApiServices{
     const String _baseUrl = 'http://192.168.60.60:8000/';
     const String authToken = '';
 
-    String todayGenerationEndPoint = '/single-today-generation/';
+    String todayGenerationEndPoint = '/single-shed_wise-generation/';
     String yesterdayGenerationEndPoint = '/single-yesterday-generation/';
     String tempAndRadiationEndPoint = '/single-radiation/';
     String grossProfitEndPoint = '/single-gross-profit/';

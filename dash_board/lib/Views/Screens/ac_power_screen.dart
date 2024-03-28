@@ -37,9 +37,6 @@ class _AcPowerScreenState extends State<AcPowerScreen> {
   }
 
 
-
-
-
   @override
   void initState() {
     fetchData();
@@ -58,11 +55,13 @@ class _AcPowerScreenState extends State<AcPowerScreen> {
         child: Column(
           children: [
             AcPowerGaugeWidget(acGaugePowerModel: acGaugePowerModel),
-        
+
+            SizedBox(height: 16.0,),
+
             todayAcPowerList.isEmpty
                 ? const Center(child: CircularProgressIndicator())
                 : Container(
-              height: 600,
+              height: 1800,
                   child: SfDataGrid(
                               source: InverterDataSource(todayAcPowerModelData: todayAcPowerList),
                               columnWidthMode: ColumnWidthMode.fill,

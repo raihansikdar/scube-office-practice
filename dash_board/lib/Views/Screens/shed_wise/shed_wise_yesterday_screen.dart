@@ -1,123 +1,55 @@
-import 'package:dash_board/Views/Screens/ac_power_screen.dart';
-import 'package:dash_board/Views/Screens/dash_board_screen.dart';
-import 'package:dash_board/Views/Screens/dgr_screen.dart';
-import 'package:dash_board/Views/Screens/splesh_screen.dart';
+import 'dart:developer';
+
+import 'package:dash_board/api_services/shed_wise/yesterday/shed_wise_yesterday_api_service.dart';
 import 'package:flutter/material.dart';
-
-
-void main() {
-  runApp( MyApp());
-}
-
-class MyApp extends StatelessWidget {
-   MyApp({super.key});
-
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'dashboard',
-      theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
-        useMaterial3: false,
-        textTheme: const TextTheme(
-          headlineSmall: TextStyle(
-            color: Colors.white,
-            fontSize: 46,
-            fontWeight: FontWeight.w800,
-          ),
-        ),
-      ),
-      home:  const SplashScreen(),
-      //home:  const AcPowerScreen(),
-    );
-  }
-}
-
-
-
-/*
-import 'dart:convert';
-import 'package:flutter/material.dart';
-import 'package:http/http.dart' as http;
 import 'package:syncfusion_flutter_datagrid/datagrid.dart';
-import 'package:intl/intl.dart';
 
-void main() {
-  runApp(const MyApp());
+import '../../../models/shed_wise/shed_wise_model.dart';
+
+class ShedWiseYesterdayScreen extends StatefulWidget {
+  const ShedWiseYesterdayScreen({super.key});
+
+  @override
+  State<ShedWiseYesterdayScreen> createState() => _ShedWiseYesterdayScreenState();
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({Key? key}) : super(key: key);
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'Syncfusion DataGrid Demo',
-      theme: ThemeData(useMaterial3: false),
-      home: MyHomePage(),
-    );
+class _ShedWiseYesterdayScreenState extends State<ShedWiseYesterdayScreen> {
+
+
+  List<ShedWiseModel> shedWiseYesterdayDataList = [];
+
+
+  Future<void> fetchData() async {
+    try {
+      final yesterdayData = await ShedWiseYesterdaysApiService.fetchShedWiseYesterdayData();
+      setState(() {
+        shedWiseYesterdayDataList = yesterdayData;
+      });
+    } catch (e) {
+      log('Error fetching data: $e');
+    }
   }
-}
 
-class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
-  @override
-  _MyHomePageState createState() => _MyHomePageState();
-}
-
-class _MyHomePageState extends State<MyHomePage> {
-  List<ShedWiseTodaysModel> shedWisetodaysDataList = [];
 
   @override
   void initState() {
     super.initState();
-    fetchDataAndUpdateDataSource();
+    fetchData();
   }
 
-  Future<void> fetchDataAndUpdateDataSource() async {
-    final response = await http.get(Uri.parse('http://192.168.60.60:8000/shedwise-shed_wise/'));
-
-    if (response.statusCode == 200) {
-      final jsonData = json.decode(response.body);
-      final List<dynamic> shedWiseTodaysData = jsonData;
-
-      setState(() {
-        shedWisetodaysDataList = shedWiseTodaysData.reversed.map<ShedWiseTodaysModel>((data) => ShedWiseTodaysModel(
-          formatDate(data['timedate']),
-          data['plant'],
-          data['huse_building'],
-          data['birichina'],
-          data['canteen'],
-          data['finished_goods_warehouse'],
-          data['circular_knitting'],
-          data['central_warehouse'],
-          data['celsius_building'],
-        )).toList();
-      });
-    } else {
-      throw Exception('Failed to load data from API');
-    }
-  }
-
-  String formatDate(String datetime) {
-    final parsedDate = DateTime.parse(datetime);
-    final formatter = DateFormat('dd/MM/yyyy HH:mm:ss');
-    return formatter.format(parsedDate);
-  }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Syncfusion Flutter DataGrid'),
+        title: const Text('Shed wise Yesterday data'),
+        automaticallyImplyLeading: false,
       ),
-      body: shedWisetodaysDataList.isEmpty
+      body: shedWiseYesterdayDataList.isEmpty
           ? const Center(child: CircularProgressIndicator())
           : SfDataGrid(
-        source: ShedWiseDataSource(shedWisetodaysModelData: shedWisetodaysDataList),
+        source: ShedWiseDataSource(shedWiseTodaysModelData: shedWiseYesterdayDataList),
         columnWidthMode: ColumnWidthMode.fill,
         columns: <GridColumn>[
           GridColumn(
@@ -223,7 +155,7 @@ class _MyHomePageState extends State<MyHomePage> {
               padding: const EdgeInsets.all(8.0),
               alignment: Alignment.center,
               child: const Text(
-                'Today\'s Generation',
+                'Yesterday Generation',
                 style: TextStyle(fontWeight: FontWeight.w600),
               ),
             ),
@@ -233,38 +165,14 @@ class _MyHomePageState extends State<MyHomePage> {
     );
   }
 }
-
-class ShedWiseTodaysModel {
-  final String timedate;
-  final double plant;
-  final double huseBuilding;
-  final double birichina;
-  final double canteen;
-  final double finishedGoodsWarehouse;
-  final double circularKnitting;
-  final double centralWarehouse;
-  final double celsiusBuilding;
-
-  ShedWiseTodaysModel(
-      this.timedate,
-      this.plant,
-      this.huseBuilding,
-      this.birichina,
-      this.canteen,
-      this.finishedGoodsWarehouse,
-      this.circularKnitting,
-      this.centralWarehouse,
-      this.celsiusBuilding);
-}
-
 class ShedWiseDataSource extends DataGridSource {
-  List<DataGridRow> _shedWisetodaysData = [];
+  List<DataGridRow> _shedWiseTodaysData = [];
 
   @override
-  List<DataGridRow> get rows => _shedWisetodaysData;
+  List<DataGridRow> get rows => _shedWiseTodaysData;
 
-  ShedWiseDataSource({required List<ShedWiseTodaysModel> shedWisetodaysModelData}) {
-    _shedWisetodaysData = shedWisetodaysModelData.map<DataGridRow>((e) => DataGridRow(cells: [
+  ShedWiseDataSource({required List<ShedWiseModel> shedWiseTodaysModelData}) {
+    _shedWiseTodaysData = shedWiseTodaysModelData.map<DataGridRow>((e) => DataGridRow(cells: [
       DataGridCell<String>(columnName: 'timedate', value: e.timedate),
       DataGridCell(columnName: 'huse_building', value: e.huseBuilding.toStringAsFixed(2)),
       DataGridCell(columnName: 'birichina', value: e.birichina.toStringAsFixed(2)),
@@ -290,4 +198,3 @@ class ShedWiseDataSource extends DataGridSource {
     );
   }
 }
-*/

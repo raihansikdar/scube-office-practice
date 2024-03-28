@@ -15,7 +15,7 @@ class TableApiService {
       final jsonData = jsonDecode(response.body);
       return [
         InverterModel(
-          name: endPoint.contains('today') ? 'Today' : 'Yesterday',
+          name: endPoint.contains('shed_wise') ? 'Today' : 'Yesterday',
           energy: jsonData['energy'],
           pr: jsonData['pr'],
           acMaxPower: jsonData['ac_max_power'],

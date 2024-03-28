@@ -44,7 +44,7 @@ class _DashBoardScreenState extends State<DashBoardScreen> {
     try {
       final cardData = await CardApiServices.fetchCardData();
       final gaugeData = await GaugeApiService.fetchGaugeData();
-      final todayData = await TableApiService.fetchTableData('/single-today-data/');
+      final todayData = await TableApiService.fetchTableData('/single-shed_wise-data/');
       final yesterdayData = await TableApiService.fetchTableData('/single-yesterday-data/');
       final Map<String, dynamic> responseData = await LineChartApiService.fetchLineChartData();
 

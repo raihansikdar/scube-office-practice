@@ -5,8 +5,11 @@ import '../../models/temperature/temperature_model.dart';
 
 
 class TemperatureApiService {
+  static const String _baseUrl = 'http://192.168.60.60:8000';
+  static const String _authToken = '';
+
   static Future<List<TemperatureModel>> fetchTemperatureData() async {
-    final response = await http.get(Uri.parse('http://192.168.60.60:8000/today-radiation/'));
+    final response = await http.get(Uri.parse('$_baseUrl/today-radiation/'), headers: {'Authorization': _authToken});
 
     if (response.statusCode == 200) {
       final jsonData = json.decode(response.body);

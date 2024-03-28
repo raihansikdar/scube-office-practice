@@ -1,5 +1,7 @@
 import 'package:dash_board/Views/Screens/ac_power_screen.dart';
 import 'package:dash_board/Views/Screens/radiation_screen.dart';
+import 'package:dash_board/Views/Screens/shed_wise/shed_wise_todays_screen.dart';
+import 'package:dash_board/Views/Screens/shed_wise/shed_wise_yesterday_screen.dart';
 import 'package:dash_board/Views/Screens/temperature_screen.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
@@ -122,6 +124,7 @@ class SidebarMenuWidget extends StatelessWidget {
               title: 'Today Energy',
               onTap: (index, _) {
                 sideMenu.changePage(index);
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ShedWiseTodaysScreen()));
               },
               iconWidget: const FaIcon(FontAwesomeIcons.calendarDay,color: Colors.white,size: 18,),
             ),
@@ -137,6 +140,7 @@ class SidebarMenuWidget extends StatelessWidget {
               title: 'Yesterday Energy',
               onTap: (index, _) {
                 sideMenu.changePage(index);
+                Navigator.push(context, MaterialPageRoute(builder: (context)=>ShedWiseYesterdayScreen()));
               },
               iconWidget: const FaIcon(FontAwesomeIcons.calendarDay,color: Colors.white,size: 18,),
               //icon: const Icon(Icons.supervisor_account),

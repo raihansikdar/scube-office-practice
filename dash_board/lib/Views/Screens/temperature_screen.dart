@@ -38,7 +38,8 @@ class _TemperatureScreenState extends State<TemperatureScreen> {
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const Text('Syncfusion Flutter DataGrid'),
+        title: const Text('Temperature'),
+        automaticallyImplyLeading: false,
       ),
       body: temperatureDataList.isEmpty ? const Center(child: CircularProgressIndicator()) : SfDataGrid(
         source:TemperatureDataSource(temperatureModelData: temperatureDataList),

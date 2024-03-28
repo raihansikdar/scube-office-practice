@@ -40,6 +40,7 @@ class _RadiationScreenState extends State<RadiationScreen> {
       appBar: AppBar(
         centerTitle: true,
         title: const Text('Syncfusion Flutter DataGrid'),
+        automaticallyImplyLeading: false,
       ),
       body:radiationDataList.isEmpty ? const Center(child: CircularProgressIndicator()) : SfDataGrid(
         source: RadiationDataSource(radiationModelData: radiationDataList),

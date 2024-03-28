@@ -3,8 +3,8 @@ import 'package:http/http.dart' as http;
 
 class LineChartApiService {
   static const String _baseUrl = 'http://192.168.60.60:8000';
-  static const String radiationEndPoint = '/today-radiation/';
-  static const String powerEndPoint = '/today-ac-power/';
+  static const String radiationEndPoint = '/shed_wise-radiation/';
+  static const String powerEndPoint = '/shed_wise-ac-power/';
 
   static Future<Map<String, dynamic>> fetchLineChartData() async {
     final radiationResponse = await http.get(Uri.parse(_baseUrl + radiationEndPoint));
