@@ -1,3 +1,6 @@
+import 'package:dash_board/Views/Screens/ac_power_screen.dart';
+import 'package:dash_board/Views/Screens/radiation_screen.dart';
+import 'package:dash_board/Views/Screens/temperature_screen.dart';
 import 'package:easy_sidemenu/easy_sidemenu.dart';
 import 'package:flutter/material.dart';
 import 'package:font_awesome_flutter/font_awesome_flutter.dart';
@@ -152,6 +155,7 @@ class SidebarMenuWidget extends StatelessWidget {
           title: 'Temperature',
           onTap: (index, _) {
             sideMenu.changePage(index);
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>TemperatureScreen()));
           },
           //icon: const Icon(Icons.tv),
           iconWidget:  const FaIcon(FontAwesomeIcons.temperatureQuarter,color: Colors.white,),
@@ -168,6 +172,7 @@ class SidebarMenuWidget extends StatelessWidget {
           title: 'Radiation',
           onTap: (index, _) {
             sideMenu.changePage(index);
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>RadiationScreen()));
           },
           //icon: const Icon(Icons.tv),
           iconWidget:  const FaIcon(FontAwesomeIcons.radiation,color: Colors.white,),
@@ -184,6 +189,7 @@ class SidebarMenuWidget extends StatelessWidget {
           title: 'AC Power',
           onTap: (index, _) {
             sideMenu.changePage(index);
+            Navigator.push(context, MaterialPageRoute(builder: (context)=>AcPowerScreen()));
           },
           icon: const Icon(Icons.power),
         ),
